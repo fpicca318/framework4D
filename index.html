@@ -55,8 +55,8 @@
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col">
 
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div class="flex items-center space-x-3 shrink-0">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-500 flex items-center justify-center text-white font-heading font-extrabold text-xl shadow-md shadow-indigo-200">
                     4D
                 </div>
@@ -65,13 +65,14 @@
                     <span class="text-xs text-slate-500">L'IA nella Scuola Italiana e nella Vita Pratica</span>
                 </div>
             </div>
-            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600">
-                <a href="#competenze" class="hover:text-indigo-600 transition-colors">Le 4 Competenze</a>
-                <a href="#vita-quotidiana" class="hover:text-indigo-600 transition-colors flex items-center gap-1.5 text-amber-700 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200"><i class="fa-solid fa-house-laptop"></i> Vita Pratica</a>
-                <a href="#generatore" class="hover:text-indigo-600 transition-colors">Casi di Studio (40)</a>
-                <a href="#origine" class="hover:text-indigo-600 transition-colors">Origine</a>
+            <nav class="hidden md:flex items-center space-x-4 lg:space-x-6 text-xs lg:text-sm font-medium text-slate-600">
+                <a href="#competenze" class="hover:text-indigo-600 transition-colors whitespace-nowrap">Le 4 Competenze</a>
+                <a href="#vita-quotidiana" class="hover:text-indigo-600 transition-colors flex items-center gap-1.5 text-amber-700 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200 whitespace-nowrap"><i class="fa-solid fa-house-laptop"></i> Vita Pratica</a>
+                <a href="#generatore" class="hover:text-indigo-600 transition-colors whitespace-nowrap">Casi di Studio (40)</a>
+                <a href="#origine" class="hover:text-indigo-600 transition-colors whitespace-nowrap">Origine</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScKNV1ar551dpQRLIZlQ36uLbliONtPfTULsjnV6QnTMefVpw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 transition-colors flex items-center gap-1.5 text-indigo-600 font-semibold whitespace-nowrap"><i class="fa-solid fa-pen-to-square"></i> Esercitazione 4D</a>
             </nav>
-            <a href="#generatore" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-lg shadow-sm transition-all hover:shadow flex items-center space-x-2">
+            <a href="#generatore" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-lg shadow-sm transition-all hover:shadow flex items-center space-x-2 shrink-0">
                 <i class="fa-solid font-bold fa-dice"></i>
                 <span>Genera Caso</span>
             </a>
@@ -966,7 +967,7 @@
                 context: "Ideare attività ludico-didattiche per favorire la conoscenza reciproca nelle classi prime nei primi tre giorni di scuola.",
                 delega: "Delega all'IA la proposta di giochi di ruolo, 'ice-breaker' ed esercizi di cooperazione adatti all'età dei ragazzi.",
                 descrizione: "Indica l'età degli alunni, il tempo a disposizione e gli spazi disponibili (aula, palestra, cortile).",
-                discernimento: "Seleziona solo le attività realmente inclusive, che non mettano a disagio studenti timidi o con bisogni speciali.",
+                discernimento: "Seleziona solo le attività réellement inclusive, che non mettano a disagio studenti timidi o con bisogni speciali.",
                 diligenza: "Condivisione del programma di accoglienza con il team docente di classe prima di iniziare le attività.",
                 domanda: "Come scegliere attività che favoriscano la coesione del gruppo classe senza forzature?"
             },
