@@ -1,1704 +1,1315 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Il Framework 4D per la scuola</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #F1F3EE;
-    --bg-panel: #FFFFFF;
-    --ink: #24312C;
-    --ink-soft: #566259;
-    --line: #DCE1D8;
-    --paper-shadow: rgba(36,49,44,0.08);
-
-    --delega: #3F6659;
-    --delega-soft: #E1EAE5;
-    --descrizione: #AD7B2C;
-    --descrizione-soft: #F3E7D2;
-    --discernimento: #6F5580;
-    --discernimento-soft: #E9E1EE;
-    --diligenza: #35597A;
-    --diligenza-soft: #DDE6ED;
-
-    --radius-s: 10px;
-    --radius-m: 16px;
-    --radius-l: 26px;
-
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    box-sizing: border-box;
-  }
-
-  :root:not([data-theme="light"]) {
-    @media (prefers-color-scheme: dark) {
-      --bg: #1B211D;
-      --bg-panel: #232B25;
-      --ink: #EDF1EA;
-      --ink-soft: #AEB9AF;
-      --line: #33403A;
-      --paper-shadow: rgba(0,0,0,0.35);
-
-      --delega-soft: #263731;
-      --descrizione-soft: #3A2F1C;
-      --discernimento-soft: #2E2536;
-      --diligenza-soft: #1F2D3B;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #1B211D;
-    --bg-panel: #232B25;
-    --ink: #EDF1EA;
-    --ink-soft: #AEB9AF;
-    --line: #33403A;
-    --paper-shadow: rgba(0,0,0,0.35);
-
-    --delega-soft: #263731;
-    --descrizione-soft: #3A2F1C;
-    --discernimento-soft: #2E2536;
-    --diligenza-soft: #1F2D3B;
-  }
-
-  * { box-sizing: border-box; }
-
-  html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
-
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Karla', -apple-system, BlinkMacSystemFont, sans-serif;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  h1, h2, h3, .display {
-    font-family: 'Fraunces', Georgia, serif;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin: 0;
-  }
-
-  a { color: inherit; }
-
-  .wrap {
-    max-width: 920px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  /* ---------- HERO ---------- */
-  .hero {
-    padding: 60px 0 56px;
-    border-bottom: 1px solid var(--line);
-  }
-  .hero-cloud {
-    position: relative;
-    min-height: 210px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 6px;
-  }
-  .hero-num {
-    font-family: 'Fraunces', Georgia, serif;
-    font-weight: 600;
-    font-style: italic;
-    font-size: clamp(4.5rem, 13vw, 8.5rem);
-    line-height: 0.82;
-    color: var(--ink);
-    letter-spacing: -0.03em;
-    position: relative;
-    z-index: 2;
-  }
-  .cloud-word {
-    position: absolute;
-    font-family: 'Karla', sans-serif;
-    font-weight: 700;
-    white-space: nowrap;
-    z-index: 1;
-  }
-  .cloud-word.delega {
-    top: 18%; left: 20%;
-    font-size: clamp(1rem, 2.6vw, 1.35rem);
-    color: var(--delega);
-    transform: rotate(-8deg);
-  }
-  .cloud-word.descrizione {
-    top: 12%; right: 18%;
-    font-size: clamp(0.85rem, 2.1vw, 1.1rem);
-    color: var(--descrizione);
-    transform: rotate(6deg);
-  }
-  .cloud-word.discernimento {
-    bottom: 12%; right: 22%;
-    font-size: clamp(0.8rem, 2vw, 1rem);
-    color: var(--discernimento);
-    transform: rotate(5deg);
-  }
-  .cloud-word.diligenza {
-    bottom: 18%; left: 18%;
-    font-size: clamp(1.05rem, 2.8vw, 1.5rem);
-    color: var(--diligenza);
-    transform: rotate(-6deg);
-  }
-  .cloud-arrows {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: visible;
-  }
-  .cloud-arrows .arc {
-    fill: none;
-    stroke-width: 3;
-    stroke-linecap: round;
-    opacity: 0.9;
-  }
-  .cloud-arrows .arc.delega { stroke: var(--delega); }
-  .cloud-arrows .arc.descrizione { stroke: var(--descrizione); }
-  .cloud-arrows .arc.discernimento { stroke: var(--discernimento); }
-  .cloud-arrows .arc.diligenza { stroke: var(--diligenza); }
-  .hero-text {
-    text-align: center;
-  }
-  .credit-badge {
-    display: inline-block;
-    font-family: 'Karla', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: var(--ink-soft);
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 6px 14px;
-    margin-bottom: 16px;
-  }
-  .hero h1 {
-    font-size: clamp(1.7rem, 3.6vw, 2.5rem);
-    font-weight: 500;
-    line-height: 1.18;
-    max-width: 24ch;
-    margin: 0 auto;
-  }
-  .hero p.lead {
-    margin: 20px auto 0;
-    font-size: 1.06rem;
-    color: var(--ink-soft);
-    max-width: 54ch;
-  }
-  @media (max-width: 620px) {
-    .hero-cloud { min-height: 170px; }
-    .hero-num { font-size: clamp(3.6rem, 22vw, 5rem); }
-    .cloud-word.delega { top: 14%; left: 8%; }
-    .cloud-word.descrizione { top: 10%; right: 6%; }
-    .cloud-word.discernimento { bottom: 8%; right: 10%; }
-    .cloud-word.diligenza { bottom: 14%; left: 6%; }
-  }
-
-  /* ---------- LOOP DIAGRAM ---------- */
-  .loop-section { padding: 56px 0 8px; }
-  .loop-section h2 { font-size: clamp(1.5rem, 3.5vw, 1.9rem); max-width: 22ch; }
-  .loop-section .sub { color: var(--ink-soft); margin-top: 10px; max-width: 58ch; }
-
-  .dcards {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    margin-top: 34px;
-  }
-  @media (max-width: 620px) {
-    .dcards { grid-template-columns: 1fr; }
-  }
-
-  .dcard-flip {
-    cursor: pointer;
-    outline: none;
-  }
-  .dcard-inner {
-    position: relative;
-    min-height: 216px;
-  }
-  .dcard-flip:focus-visible .dcard-face { box-shadow: 0 0 0 3px var(--accent); }
-
-  .dcard-face {
-    position: relative;
-    min-height: 216px;
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-m);
-    padding: 24px 24px 20px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    animation: fade-in-face 0.25s ease;
-  }
-  .dcard-face::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    width: 5px; height: 100%;
-    background: var(--accent);
-  }
-  .dcard-back { display: none; }
-  .dcard-flip.flipped .dcard-front { display: none; }
-  .dcard-flip.flipped .dcard-back { display: flex; }
-
-  .dcard-face .step {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-  .dcard-face h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .dcard-face p {
-    color: var(--ink-soft);
-    font-size: 0.97rem;
-    margin: 0;
-  }
-  .dcard-back p {
-    color: var(--ink);
-    font-size: 0.95rem;
-  }
-  .flip-hint {
-    margin-top: auto;
-    padding-top: 12px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--accent);
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .dcard-flip.delega { --accent: var(--delega); }
-  .dcard-flip.descrizione { --accent: var(--descrizione); }
-  .dcard-flip.discernimento { --accent: var(--discernimento); }
-  .dcard-flip.diligenza { --accent: var(--diligenza); }
-
-  .loop-caption {
-    margin-top: 18px;
-    font-size: 0.92rem;
-    color: var(--ink-soft);
-    font-style: italic;
-  }
-
-  /* ---------- ORIGIN BOX ---------- */
-  .origin-box {
-    margin-top: 36px;
-    display: flex;
-    gap: 18px;
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-m);
-    padding: 26px 26px 28px;
-  }
-  @media (max-width: 560px) {
-    .origin-box { flex-direction: column; gap: 14px; padding: 22px 20px 24px; }
-  }
-  .origin-icon {
-    flex-shrink: 0;
-    width: 38px;
-    height: 38px;
-    color: var(--delega);
-  }
-  .origin-icon svg { width: 100%; height: 100%; }
-  .origin-body h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .origin-body > p {
-    color: var(--ink-soft);
-    margin: 0 0 16px;
-    max-width: 62ch;
-  }
-  .origin-btn {
-    border: 1px solid var(--line);
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Karla', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    padding: 10px 18px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: border-color 0.15s ease, background 0.15s ease;
-  }
-  .origin-btn:hover { border-color: var(--delega); }
-  .origin-btn.open { background: var(--delega); color: #fff; border-color: var(--delega); }
-
-  .origin-details {
-    display: none;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid var(--line);
-  }
-  .origin-details.open { display: block; animation: rise 0.28s ease; }
-  .origin-details p {
-    color: var(--ink);
-    margin: 0 0 14px;
-    max-width: 66ch;
-    font-size: 0.97rem;
-  }
-  .origin-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 6px;
-  }
-  .origin-link {
-    display: inline-flex;
-    align-items: center;
-    font-size: 0.88rem;
-    font-weight: 700;
-    text-decoration: none;
-    padding: 10px 16px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    color: var(--ink);
-    background: var(--bg);
-  }
-  .origin-link:hover { border-color: var(--delega); }
-  .origin-link.primary {
-    background: var(--delega);
-    color: #fff;
-    border-color: var(--delega);
-  }
-  .origin-link.primary:hover { opacity: 0.9; border-color: var(--delega); }
-
-  /* ---------- GENERATOR ---------- */
-  .generator {
-    padding: 64px 0 90px;
-  }
-  .generator h2 { font-size: clamp(1.5rem, 3.5vw, 1.9rem); }
-  .generator .sub { color: var(--ink-soft); margin-top: 10px; max-width: 58ch; }
-
-  .controls {
-    margin-top: 30px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-  }
-
-  .role-toggle {
-    display: inline-flex;
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 4px;
-    gap: 2px;
-  }
-  .role-toggle button {
-    border: none;
-    background: transparent;
-    font-family: 'Karla', sans-serif;
-    font-weight: 600;
-    font-size: 0.92rem;
-    padding: 9px 16px;
-    border-radius: 999px;
-    color: var(--ink-soft);
-    cursor: pointer;
-    transition: background 0.18s ease, color 0.18s ease;
-  }
-  .role-toggle button.active {
-    background: var(--delega);
-    color: #fff;
-  }
-
-  .category-select {
-    font-family: 'Karla', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--ink);
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 11px 34px 11px 16px;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23566259' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 15px;
-    max-width: 260px;
-  }
-  .category-select:hover { border-color: var(--delega); }
-
-  .generate-btn {
-    margin-left: auto;
-    border: none;
-    background: var(--ink);
-    color: var(--bg);
-    font-family: 'Karla', sans-serif;
-    font-weight: 700;
-    font-size: 0.97rem;
-    padding: 13px 22px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: transform 0.12s ease, opacity 0.12s ease;
-  }
-  .generate-btn:hover { opacity: 0.88; }
-  .generate-btn:active { transform: scale(0.97); }
-
-  .count-note {
-    width: 100%;
-    font-size: 0.85rem;
-    color: var(--ink-soft);
-    margin-top: 2px;
-  }
-
-  .case-stage {
-    margin-top: 26px;
-    min-height: 260px;
-  }
-
-  .placeholder {
-    border: 1.5px dashed var(--line);
-    border-radius: var(--radius-l);
-    padding: 50px 28px;
-    text-align: center;
-    color: var(--ink-soft);
-  }
-  .placeholder .big { font-size: 2rem; display: block; margin-bottom: 10px; }
-  .placeholder-icon {
-    display: block;
-    width: 34px;
-    height: 34px;
-    margin: 0 auto 14px;
-    color: var(--delega);
-  }
-  .placeholder-icon svg { width: 100%; height: 100%; }
-
-  .case-flip {
-    outline: none;
-    animation: rise 0.32s ease;
-  }
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fade-in-face {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  .case-flip:focus-visible .case-face { box-shadow: 0 0 0 3px var(--delega); }
-
-  .case-face {
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-l);
-    padding: 32px 30px 28px;
-    box-shadow: 0 18px 40px -28px var(--paper-shadow);
-    animation: fade-in-face 0.25s ease;
-  }
-  .case-back { display: none; }
-  .case-flip.flipped .case-front { display: none; }
-  .case-flip.flipped .case-back { display: block; }
-
-  .case-flip-hint-btn {
-    margin-top: 22px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--delega);
-    background: var(--delega-soft);
-    border: none;
-    border-radius: 999px;
-    padding: 9px 16px;
-    cursor: pointer;
-    font-family: 'Karla', sans-serif;
-  }
-  .case-flip-hint-btn:hover { opacity: 0.85; }
-
-  .case-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-  .role-pill {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 5px 12px;
-    border-radius: 999px;
-    background: var(--delega-soft);
-    color: var(--delega);
-    white-space: nowrap;
-  }
-  .role-pill.ata { background: var(--diligenza-soft); color: var(--diligenza); }
-
-  .case-top-left {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-  }
-  .category-pill {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--ink-soft);
-  }
-
-  .emotion-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    padding: 5px 13px 5px 10px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--bg);
-    color: var(--ink-soft);
-  }
-  .emotion-emoji { font-size: 1rem; line-height: 1; }
-
-  .case-face h3 {
-    font-size: 1.55rem;
-    margin-top: 14px;
-    line-height: 1.2;
-  }
-
-  .tag-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 16px 0 20px;
-  }
-  .tag {
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 5px 11px;
-    border-radius: 999px;
-  }
-  .tag.delega { background: var(--delega-soft); color: var(--delega); }
-  .tag.descrizione { background: var(--descrizione-soft); color: var(--descrizione); }
-  .tag.discernimento { background: var(--discernimento-soft); color: var(--discernimento); }
-  .tag.diligenza { background: var(--diligenza-soft); color: var(--diligenza); }
-
-  .case-block { margin-top: 18px; }
-  .case-block .label {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--ink-soft);
-    margin-bottom: 6px;
-  }
-  .case-block p { margin: 0; }
-
-  .d-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-top: 10px;
-  }
-  @media (max-width: 560px) {
-    .d-grid { grid-template-columns: 1fr; }
-  }
-  .d-block {
-    background: var(--bg);
-    border: 1px solid var(--line);
-    border-left: 4px solid var(--accent);
-    border-radius: var(--radius-s);
-    padding: 12px 14px;
-  }
-  .d-block p { margin: 0; font-size: 0.93rem; color: var(--ink); }
-  .d-block-label {
-    font-size: 0.74rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-    color: var(--accent);
-  }
-  .d-block.delega { --accent: var(--delega); }
-  .d-block.descrizione { --accent: var(--descrizione); }
-  .d-block.discernimento { --accent: var(--discernimento); }
-  .d-block.diligenza { --accent: var(--diligenza); }
-  .d-block-label.delega { color: var(--delega); }
-  .d-block-label.descrizione { color: var(--descrizione); }
-  .d-block-label.discernimento { color: var(--discernimento); }
-  .d-block-label.diligenza { color: var(--diligenza); }
-
-  .question-block {
-    margin-top: 22px;
-    padding: 16px 18px;
-    background: var(--bg);
-    border-radius: var(--radius-m);
-    border: 1px solid var(--line);
-  }
-  .question-block .label { color: var(--delega); }
-  .question-block p { font-style: italic; }
-
-  .browse-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 28px;
-    font-size: 0.94rem;
-    font-weight: 700;
-    color: var(--delega);
-    cursor: pointer;
-    background: var(--bg-panel);
-    border: 1.5px solid var(--delega);
-    border-radius: 999px;
-    padding: 11px 22px 11px 16px;
-    font-family: 'Karla', sans-serif;
-    transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
-  }
-  .browse-link:hover {
-    background: var(--delega-soft);
-    box-shadow: 0 6px 16px -10px var(--paper-shadow);
-  }
-  .browse-link:active { transform: scale(0.98); }
-  .browse-link.open {
-    background: var(--delega);
-    color: #fff;
-  }
-  .browse-emoji {
-    font-size: 1.15rem;
-    line-height: 1;
-  }
-
-  /* browse list */
-  .browse-list {
-    margin-top: 22px;
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .browse-list.open { display: flex; }
-  .browse-item {
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-s);
-    padding: 13px 16px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 6px 12px;
-    flex-wrap: wrap;
-  }
-  .browse-item:hover { border-color: var(--delega); }
-  .browse-item .bi-title {
-    font-weight: 600;
-    font-size: 0.95rem;
-    flex: 1 1 220px;
-    min-width: 0;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-  .browse-item .bi-role {
-    font-size: 0.75rem;
-    color: var(--ink-soft);
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-  @media (max-width: 480px) {
-    .browse-item { flex-direction: column; align-items: flex-start; gap: 4px; }
-    .browse-item .bi-role { white-space: normal; }
-  }
-
-  footer {
-    border-top: 1px solid var(--line);
-    padding: 26px 0 calc(26px + env(safe-area-inset-bottom, 0px));
-    text-align: center;
-    color: var(--ink-soft);
-    font-size: 0.85rem;
-  }
-  .footer-credit {
-    margin-top: 8px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--ink-soft);
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framework 4D | IA a Scuola e Vita Quotidiana</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        delega: { DEFAULT: '#2563eb', light: '#eff6ff', border: '#bfdbfe', text: '#1e40af' },
+                        descrizione: { DEFAULT: '#0d9488', light: '#f0fdf4', border: '#99f6e4', text: '#115e59' },
+                        discernimento: { DEFAULT: '#d97706', light: '#fffbeb', border: '#fde68a', text: '#b45309' },
+                        diligenza: { DEFAULT: '#dc2626', light: '#fef2f2', border: '#fecaca', text: '#991b1b' },
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .perspective {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col">
 
-<div class="wrap hero">
-  <div class="hero-cloud">
-    <span class="cloud-word diligenza">Diligenza</span>
-    <div class="hero-num" aria-hidden="true">4D</div>
-    <span class="cloud-word discernimento">Discernimento</span>
-    <span class="cloud-word delega">Delega</span>
-    <span class="cloud-word descrizione">Descrizione</span>
-    <svg class="cloud-arrows" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-      <defs>
-        <marker id="arrow-delega" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0,0 L10,5 L0,10 z" fill="#3F6659"></path>
-        </marker>
-        <marker id="arrow-descrizione" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0,0 L10,5 L0,10 z" fill="#AD7B2C"></path>
-        </marker>
-        <marker id="arrow-discernimento" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0,0 L10,5 L0,10 z" fill="#6F5580"></path>
-        </marker>
-        <marker id="arrow-diligenza" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0,0 L10,5 L0,10 z" fill="#35597A"></path>
-        </marker>
-      </defs>
-      <path d="M43.16,12.41 A20,40 0 0,1 56.84,12.41" class="arc delega" marker-end="url(#arrow-delega)" vector-effect="non-scaling-stroke"></path>
-      <path d="M76.31,36.32 A28,40 0 0,1 76.31,63.68" class="arc descrizione" marker-end="url(#arrow-descrizione)" vector-effect="non-scaling-stroke"></path>
-      <path d="M56.84,87.59 A20,40 0 0,1 43.16,87.59" class="arc discernimento" marker-end="url(#arrow-discernimento)" vector-effect="non-scaling-stroke"></path>
-      <path d="M23.69,63.68 A28,40 0 0,1 23.69,36.32" class="arc diligenza" marker-end="url(#arrow-diligenza)" vector-effect="non-scaling-stroke"></path>
-    </svg>
-  </div>
-  <div class="hero-text">
-    <h1>Il framework che aiuta la scuola a lavorare bene con l'intelligenza artificiale.</h1>
-    <p class="lead">Decidere, comunicare, valutare, rispondere: quattro competenze per usare l'IA in modo consapevole, dalla programmazione didattica alla segreteria. Qui sotto trovi la spiegazione e un generatore di casi di studio reali per il personale docente e ATA.</p>
-  </div>
-</div>
-
-<div class="wrap loop-section">
-  <h2>Le quattro competenze</h2>
-  <p class="sub">Non sono passaggi da eseguire una volta sola, ma un ciclo che si ripete ogni volta che si lavora con l'IA: si decide, si comunica, si valuta, ci si assume la responsabilità.</p>
-
-  <div class="dcards">
-    <div class="dcard-flip delega" tabindex="0" role="button" aria-pressed="false" aria-label="Delega: tocca per vedere l'esempio a scuola">
-      <div class="dcard-inner">
-        <div class="dcard-face dcard-front">
-          <div class="step">1 · Decidere</div>
-          <h3>Delega</h3>
-          <p>Capire se, quando e come coinvolgere l'IA in un compito, distinguendo cosa affidarle da cosa va tenuto in mano propria.</p>
-          <span class="flip-hint">↻ Tocca per l'esempio a scuola</span>
-        </div>
-        <div class="dcard-face dcard-back">
-          <div class="step">A scuola</div>
-          <h3>Delega</h3>
-          <p>Si delega la prima bozza di una circolare, mai la decisione su un provvedimento disciplinare.</p>
-          <span class="flip-hint">↻ Tocca per tornare</span>
-        </div>
-      </div>
-    </div>
-    <div class="dcard-flip descrizione" tabindex="0" role="button" aria-pressed="false" aria-label="Descrizione: tocca per vedere l'esempio a scuola">
-      <div class="dcard-inner">
-        <div class="dcard-face dcard-front">
-          <div class="step">2 · Comunicare</div>
-          <h3>Descrizione</h3>
-          <p>Spiegare con chiarezza l'obiettivo, dando contesto, vincoli e formato, così l'IA produce un output davvero utile.</p>
-          <span class="flip-hint">↻ Tocca per l'esempio a scuola</span>
-        </div>
-        <div class="dcard-face dcard-back">
-          <div class="step">A scuola</div>
-          <h3>Descrizione</h3>
-          <p>Più contesto dai — classe, obiettivo, formato — più il risultato sarà pronto all'uso.</p>
-          <span class="flip-hint">↻ Tocca per tornare</span>
-        </div>
-      </div>
-    </div>
-    <div class="dcard-flip discernimento" tabindex="0" role="button" aria-pressed="false" aria-label="Discernimento: tocca per vedere l'esempio a scuola">
-      <div class="dcard-inner">
-        <div class="dcard-face dcard-front">
-          <div class="step">3 · Valutare</div>
-          <h3>Discernimento</h3>
-          <p>Giudicare se ciò che l'IA ha prodotto è corretto, pertinente e sicuro, senza scambiare un testo scorrevole per un testo vero.</p>
-          <span class="flip-hint">↻ Tocca per l'esempio a scuola</span>
-        </div>
-        <div class="dcard-face dcard-back">
-          <div class="step">A scuola</div>
-          <h3>Discernimento</h3>
-          <p>Un testo ben scritto non è automaticamente corretto: va confrontato con ciò che sai della classe.</p>
-          <span class="flip-hint">↻ Tocca per tornare</span>
-        </div>
-      </div>
-    </div>
-    <div class="dcard-flip diligenza" tabindex="0" role="button" aria-pressed="false" aria-label="Diligenza: tocca per vedere l'esempio a scuola">
-      <div class="dcard-inner">
-        <div class="dcard-face dcard-front">
-          <div class="step">4 · Rispondere</div>
-          <h3>Diligenza</h3>
-          <p>Prendersi la responsabilità di come viene usato l'output: verifica, attribuzione, conseguenze prima di condividerlo.</p>
-          <span class="flip-hint">↻ Tocca per l'esempio a scuola</span>
-        </div>
-        <div class="dcard-face dcard-back">
-          <div class="step">A scuola</div>
-          <h3>Diligenza</h3>
-          <p>Firma, fonti, privacy: la responsabilità finale resta sempre della persona, mai dello strumento.</p>
-          <span class="flip-hint">↻ Tocca per tornare</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <p class="loop-caption">Il ciclo si chiude e riparte: ogni nuova delega nasce spesso da ciò che si è imparato valutando l'ultimo output.</p>
-
-  <div class="origin-box">
-    <div class="origin-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path><path d="M14 3v5h5"></path><line x1="8.5" y1="12.5" x2="15.5" y2="12.5"></line><line x1="8.5" y1="16" x2="13" y2="16"></line></svg>
-    </div>
-    <div class="origin-body">
-      <h3>Da dove viene il framework 4D</h3>
-      <p>Nasce da una collaborazione accademica con Anthropic ed è oggi alla base di corsi di formazione gratuiti seguiti da centinaia di migliaia di persone.</p>
-      <button class="origin-btn" id="originToggle">Leggi origini, autori e fonti ufficiali</button>
-      <div class="origin-details" id="originDetails">
-        <p>Il framework è stato ideato dai professori Rick Dakan (Ringling College of Art and Design) e Joseph Feller (University College Cork), tra il 2023 e il 2024, per dare anche a chi non lavora nel settore tecnologico un vocabolario condiviso per collaborare con l'IA in modo efficace, efficiente, etico e sicuro.</p>
-        <p>Anthropic ha successivamente adottato il modello come base della propria formazione pubblica, collaborando con i due autori allo sviluppo di una serie di corsi gratuiti — tra cui percorsi dedicati a scuola e no-profit — che hanno raccolto oltre un milione di iscrizioni complessive.</p>
-        <div class="origin-links">
-          <a class="origin-link primary" href="https://www-cdn.anthropic.com/b383cf6baddbfc72fdf8b0ed533a518e2872d531.pdf" target="_blank" rel="noopener">Documento ufficiale (PDF, Anthropic) ↗</a>
-          <a class="origin-link" href="https://www.coursera.org/learn/ai-fluency-framework-foundations" target="_blank" rel="noopener">Corso: AI Fluency: Framework &amp; Foundations ↗</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="wrap generator" id="generator">
-  <h2>Genera un caso di studio</h2>
-  <p class="sub">40 situazioni reali di scuola, organizzate in sottocategorie tematiche e collegate a tutte e 4 le D, con una domanda per la discussione in aula docenti o in un corso di formazione.</p>
-
-  <div class="controls">
-    <div class="role-toggle" role="tablist">
-      <button class="active" data-role="tutti">Tutti</button>
-      <button data-role="docente">Docenti</button>
-      <button data-role="ata">Personale ATA</button>
-    </div>
-    <select class="category-select" id="categorySelect" aria-label="Filtra per sottocategoria">
-      <option value="tutte">Tutte le sottocategorie</option>
-    </select>
-    <button class="generate-btn" id="genBtn">Genera un caso →</button>
-    <div class="count-note" id="countNote"></div>
-  </div>
-
-  <div class="case-stage" id="stage">
-    <div class="placeholder">
-      <span class="placeholder-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polygon points="14.3,9.7 12.9,14.5 9.7,14.3 11.1,9.5"></polygon></svg>
-      </span>
-      Premi "Genera un caso" per iniziare.
-    </div>
-  </div>
-
-  <button class="browse-link" id="browseToggle"><span class="browse-emoji" id="browseEmoji">📚</span><span id="browseLabel">Oppure sfoglia tutti i casi disponibili</span></button>
-  <div class="browse-list" id="browseList"></div>
-</div>
-
-<footer>
-  Contenuto ispirato all'AI Fluency Framework (Delegation, Description, Discernment, Diligence) sviluppato con Anthropic.
-  <div class="footer-credit">@2026 Francesco Picca</div>
-</footer>
-
-<script>
-const D_LABELS = {
-  delega: "Delega",
-  descrizione: "Descrizione",
-  discernimento: "Discernimento",
-  diligenza: "Diligenza"
-};
-
-const CATEGORY_LABELS = {
-  didattica: "Didattica e progettazione",
-  valutazione: "Valutazione e feedback",
-  inclusione: "Inclusione e bisogni educativi speciali",
-  comunicazione: "Comunicazione",
-  aggiornamento: "Aggiornamento e innovazione",
-  segreteria: "Segreteria didattica e amministrativa",
-  direzione: "Direzione e contabilità",
-  tecnico: "Supporto tecnico e informatico",
-  sicurezza: "Collaboratori scolastici e sicurezza"
-};
-
-const CATEGORIES_BY_ROLE = {
-  docente: ["didattica", "valutazione", "inclusione", "comunicazione", "aggiornamento"],
-  ata: ["segreteria", "direzione", "tecnico", "sicurezza"]
-};
-
-const CASES = [
-  // ---------------- DOCENTI ----------------
-  {
-    role: "docente",
-    title: "Preparare una verifica di matematica differenziata",
-    category: "didattica",
-    scenario: "Una docente di scuola secondaria deve preparare tre versioni della stessa verifica: base, intermedia, avanzata. Decide di chiedere aiuto all'IA per generare le varianti degli esercizi.",
-    explanation: {
-      delega: "Decide di affidare all'IA la generazione delle varianti ripetitive, ma tiene per sé la scelta degli obiettivi di apprendimento da verificare.",
-      descrizione: "Specifica argomento, tipologia di esercizi e livello di difficoltà per ciascuna delle tre versioni.",
-      discernimento: "Controlla che le tre versioni siano calibrate in modo coerente tra loro, e non semplicemente più lunghe o più corte.",
-      diligenza: "Verifica personalmente ogni esercizio prima di stamparlo, perché un errore matematico nella verifica resta comunque una sua responsabilità."
-    },
-    emotion: { emoji: "🙂", label: "Sollievo operativo" },
-    question: "Quali criteri della verifica non dovrebbero mai essere delegati, perché richiedono la conoscenza diretta della classe?"
-  },
-  {
-    role: "docente",
-    title: "Correggere temi di italiano con l'aiuto dell'IA",
-    category: "valutazione",
-    scenario: "Un docente usa l'IA per ottenere una prima bozza di commento su 25 temi, per risparmiare tempo nella correzione.",
-    explanation: {
-      delega: "Sceglie di farsi aiutare solo per una prima bozza di commento, mantenendo per sé il giudizio finale su ogni elaborato.",
-      descrizione: "Indica i criteri di valutazione della classe (coerenza, lessico, originalità) perché il commento non sia generico.",
-      discernimento: "Valuta se i commenti generati colgono davvero lo stile e i contenuti di ogni alunno, o se sono intercambiabili.",
-      diligenza: "Si assume la responsabilità del voto finale e comunica agli studenti in che modo è stato usato lo strumento."
-    },
-    emotion: { emoji: "🤔", label: "Cautela riflessiva" },
-    question: "Come si può spiegare agli studenti che l'IA ha aiutato nella correzione senza far percepire il giudizio come 'meno personale'?"
-  },
-  {
-    role: "docente",
-    title: "Piano didattico personalizzato per un alunno con DSA",
-    category: "inclusione",
-    scenario: "Una docente di sostegno vuole una bozza di attività personalizzate per un alunno con dislessia, da integrare nel PDP.",
-    explanation: {
-      delega: "Decide di usare l'IA solo per generare idee di attività, non per scrivere valutazioni o dati sensibili sull'alunno.",
-      descrizione: "Fornisce il profilo di apprendimento in forma anonima, senza nome né dati identificativi.",
-      discernimento: "Valuta se le attività proposte sono davvero adatte al profilo descritto, e non genericamente 'inclusive'.",
-      diligenza: "Verifica la conformità alla privacy e alla normativa sui BES prima di inserire qualsiasi contenuto nel documento ufficiale."
-    },
-    emotion: { emoji: "🧭", label: "Cura e responsabilità" },
-    question: "Quali informazioni sull'alunno non dovrebbero mai essere scritte in un prompt, anche se lo strumento sembra sicuro?"
-  },
-  {
-    role: "docente",
-    title: "Creare quiz interattivi di ripasso",
-    category: "didattica",
-    scenario: "Un docente di scienze vuole generare 15 domande a risposta multipla sul ciclo dell'acqua, con difficoltà crescente.",
-    explanation: {
-      delega: "Affida all'IA la generazione delle domande, un compito ripetitivo e a basso rischio.",
-      descrizione: "Specifica argomento, numero di domande, tipologia di distrattori e livello scolastico.",
-      discernimento: "Controlla che le domande siano corrette dal punto di vista scientifico e non ambigue.",
-      diligenza: "Corregge eventuali errori prima di somministrare il quiz agli studenti."
-    },
-    emotion: { emoji: "😊", label: "Efficienza serena" },
-    question: "Che differenza fa, nel risultato, specificare l'età degli studenti nel prompt?"
-  },
-  {
-    role: "docente",
-    title: "Verificare un feedback automatico su un elaborato",
-    category: "valutazione",
-    scenario: "Un'insegnante di inglese genera un feedback automatico su un saggio argomentativo scritto da uno studente di quinta.",
-    explanation: {
-      delega: "Decide di generare una bozza di feedback, ma si riserva la lettura integrale dell'elaborato originale.",
-      descrizione: "Indica il livello della classe e gli aspetti su cui concentrare il commento, come grammatica o argomentazione.",
-      discernimento: "Distingue un feedback pedagogicamente utile, che indica cosa migliorare e perché, da uno vago o generico.",
-      diligenza: "Personalizza il feedback finale con osservazioni proprie prima di restituirlo allo studente."
-    },
-    emotion: { emoji: "🧐", label: "Attenzione critica" },
-    question: "Un feedback troppo esaustivo generato dall'IA rischia di scoraggiare più che aiutare? Perché?"
-  },
-  {
-    role: "docente",
-    title: "Tradurre materiali per un alunno neoarrivato",
-    category: "inclusione",
-    scenario: "Un docente traduce con l'IA una scheda di accoglienza in arabo per un alunno appena arrivato in Italia.",
-    explanation: {
-      delega: "Sceglie di usare l'IA per una prima traduzione rapida, non definitiva.",
-      descrizione: "Specifica il contesto scolastico e il livello di formalità richiesto nella traduzione.",
-      discernimento: "Valuta se il tono e i termini scelti sono adeguati e comprensibili per una famiglia in un momento delicato.",
-      diligenza: "Fa rivedere la traduzione da un mediatore culturale o da un madrelingua prima di consegnarla."
-    },
-    emotion: { emoji: "🫶", label: "Premura culturale" },
-    question: "Cosa si perde in una traduzione automatica che un mediatore culturale coglierebbe invece?"
-  },
-  {
-    role: "docente",
-    title: "Simulare un colloquio difficile con un genitore",
-    category: "comunicazione",
-    scenario: "Prima di un colloquio delicato, una docente chiede all'IA di simulare le possibili obiezioni di un genitore preoccupato per il rendimento del figlio.",
-    explanation: {
-      delega: "Usa l'IA come partner di pensiero per esplorare obiezioni possibili, in modalità 'augmentation'.",
-      descrizione: "Descrive la situazione reale, il rendimento dello studente e la storia dei rapporti con la famiglia, per ottenere una simulazione realistica.",
-      discernimento: "Valuta quali obiezioni simulate sono plausibili e quali invece eccessive o fuori contesto.",
-      diligenza: "Entra nel colloquio reale preparata, ma pronta ad adattarsi a ciò che l'IA non poteva prevedere."
-    },
-    emotion: { emoji: "😅", label: "Tensione preparata" },
-    question: "In che modo simulare la conversazione in anticipo cambia il modo di affrontarla davvero?"
-  },
-  {
-    role: "docente",
-    title: "Costruire una rubrica di valutazione per un lavoro di gruppo",
-    category: "valutazione",
-    scenario: "Un docente vuole una rubrica con criteri chiari per valutare un progetto di gruppo in educazione civica.",
-    explanation: {
-      delega: "Affida la prima stesura della rubrica, mantenendo per sé la decisione sui pesi di ogni criterio.",
-      descrizione: "Definisce quali competenze osservare, come collaborazione e argomentazione, e quanti livelli di valutazione usare.",
-      discernimento: "Controlla che i criteri siano misurabili e coerenti con quanto realmente insegnato in classe, non generici.",
-      diligenza: "Comunica la rubrica agli studenti prima del lavoro, assumendosene la responsabilità didattica."
-    },
-    emotion: { emoji: "✅", label: "Chiarezza condivisa" },
-    question: "Una rubrica generata dall'IA riflette davvero cosa è stato insegnato in quella classe specifica?"
-  },
-  {
-    role: "docente",
-    title: "Presentazione multimediale su un evento storico",
-    category: "didattica",
-    scenario: "Un'insegnante di storia chiede all'IA una scaletta e alcuni testi di supporto per una lezione sulla Rivoluzione francese.",
-    explanation: {
-      delega: "Affida la parte organizzativa, cioè scaletta e struttura, mantenendo per sé l'interpretazione storica.",
-      descrizione: "Specifica il livello di approfondimento e il taglio tematico da dare alla lezione.",
-      discernimento: "Verifica ogni data e fatto storico su fonti accademiche prima di usarli in classe.",
-      diligenza: "Corregge eventuali imprecisioni e cita le fonti usate, come farebbe con qualsiasi materiale didattico."
-    },
-    emotion: { emoji: "🤓", label: "Curiosità rigorosa" },
-    question: "Quali fatti storici richiedono sempre una verifica su fonti accademiche, anche se l'IA li riporta con sicurezza?"
-  },
-  {
-    role: "docente",
-    title: "Proporre attività di recupero personalizzate",
-    category: "inclusione",
-    scenario: "Dopo un compito in classe con risultati deludenti, un docente chiede all'IA idee di attività di recupero mirate sulle lacune emerse.",
-    explanation: {
-      delega: "Chiede idee di attività mirate, invece di scriverle da zero, dopo un compito con risultati deludenti.",
-      descrizione: "Descrive l'errore concettuale emerso, non solo l'argomento generale della verifica.",
-      discernimento: "Confronta le proposte con l'errore reale osservato, scartando quelle troppo generiche.",
-      diligenza: "Adatta comunque l'attività scelta alla classe specifica prima di proporla."
-    },
-    emotion: { emoji: "🎯", label: "Determinazione mirata" },
-    question: "Come si verifica se un'attività di recupero suggerita dall'IA affronta davvero l'errore concettuale osservato?"
-  },
-  {
-    role: "docente",
-    title: "Bozza di una relazione per il PEI",
-    category: "inclusione",
-    scenario: "Una docente di sostegno usa l'IA per strutturare la bozza di una relazione da inserire nel Piano Educativo Individualizzato.",
-    explanation: {
-      delega: "Usa l'IA solo per la struttura del documento, non per contenuti clinici o dati sensibili sull'alunno.",
-      descrizione: "Fornisce indicazioni generali sul tipo di sezioni richieste dalla normativa, senza inserire dati identificativi.",
-      discernimento: "Valuta se il linguaggio usato è adeguato al registro istituzionale richiesto da un documento con valore legale.",
-      diligenza: "Rilegge ogni affermazione e firma il documento assumendosene la piena responsabilità professionale."
-    },
-    emotion: { emoji: "😟", label: "Responsabilità pesante" },
-    question: "Cosa cambia, in termini di responsabilità professionale, tra 'un aiuto per scrivere' e 'un testo da firmare come proprio'?"
-  },
-  {
-    role: "docente",
-    title: "Brainstorming di attività di gamification",
-    category: "aggiornamento",
-    scenario: "Un docente di educazione fisica vuole rendere più coinvolgente un'unità didattica e chiede all'IA idee di giochi a squadre.",
-    explanation: {
-      delega: "Usa l'IA in modalità 'augmentation' per ampliare il ventaglio di idee su cui ragionare, non per sostituire la progettazione.",
-      descrizione: "Specifica età degli studenti, spazi disponibili e materiali a disposizione.",
-      discernimento: "Valuta quali idee sono davvero realizzabili con le risorse reali della scuola.",
-      diligenza: "Testa l'attività scelta prima di proporla a un'intera classe, per sicurezza e fattibilità."
-    },
-    emotion: { emoji: "😄", label: "Entusiasmo misurato" },
-    question: "Quante delle idee proposte dall'IA sono realizzabili con gli spazi e i materiali che hai davvero a disposizione?"
-  },
-
-  // ---------------- PERSONALE ATA ----------------
-  {
-    role: "ata",
-    title: "Redigere una circolare interna",
-    category: "segreteria",
-    scenario: "L'assistente amministrativo deve scrivere una circolare sulle nuove modalità di giustificazione delle assenze e chiede aiuto all'IA per la prima bozza.",
-    explanation: {
-      delega: "Affida la prima bozza del testo, mantenendo il controllo sui contenuti obbligatori da includere.",
-      descrizione: "Specifica destinatari, tono formale e i punti obbligatori, come riferimenti normativi e scadenze.",
-      discernimento: "Verifica se lo stile della bozza rispetta quello abitualmente usato dalla segreteria.",
-      diligenza: "Controlla i riferimenti normativi citati prima della diffusione ufficiale."
-    },
-    emotion: { emoji: "🙂", label: "Precisione tranquilla" },
-    question: "Una circolare generata dall'IA rispetta lo stile e i riferimenti normativi usati abitualmente dalla segreteria?"
-  },
-  {
-    role: "ata",
-    title: "Rispondere a un'email delicata di un genitore",
-    category: "segreteria",
-    scenario: "Un componente della segreteria riceve un'email polemica da un genitore e usa l'IA per abbozzare una risposta equilibrata.",
-    explanation: {
-      delega: "Sceglie di generare solo una bozza di risposta, non un testo da inviare direttamente senza rileggerlo.",
-      descrizione: "Descrive il contesto e il tono richiesto, fermo ma rispettoso, per la risposta.",
-      discernimento: "Valuta se il tono della bozza è davvero equilibrato o rischia di sembrare freddo o difensivo.",
-      diligenza: "Fa rileggere la risposta a un collega o al dirigente prima dell'invio, data la delicatezza della situazione."
-    },
-    emotion: { emoji: "😬", label: "Tensione contenuta" },
-    question: "Chi altro in segreteria dovrebbe rivedere una risposta a un'email delicata prima dell'invio?"
-  },
-  {
-    role: "ata",
-    title: "Organizzare l'archivio digitale dei fascicoli studenti",
-    category: "segreteria",
-    scenario: "Il personale di segreteria valuta se affidare all'IA la proposta di una nuova struttura di cartelle per l'archivio digitale.",
-    explanation: {
-      delega: "Affida all'IA la proposta di una struttura di cartelle, non l'accesso ai dati reali degli studenti.",
-      descrizione: "Descrive le categorie di documenti da archiviare e le esigenze di ricerca della segreteria.",
-      discernimento: "Valuta se la struttura proposta rispetta le regole interne di archiviazione della scuola.",
-      diligenza: "Verifica chi avrà accesso a ciascuna cartella, per garantire la protezione dei dati personali."
-    },
-    emotion: { emoji: "🗂️", label: "Ordine fiducioso" },
-    question: "Quali criteri di archiviazione dipendono da regole interne che l'IA non può conoscere?"
-  },
-  {
-    role: "ata",
-    title: "Compilare moduli standard per le iscrizioni",
-    category: "segreteria",
-    scenario: "Durante il periodo delle iscrizioni, un assistente amministrativo usa l'IA per generare rapidamente lettere standard di conferma iscrizione.",
-    explanation: {
-      delega: "Affida alla IA la generazione di lettere standard ripetitive, un compito a basso rischio.",
-      descrizione: "Fornisce il modello di lettera e i dati variabili da inserire, come nome, classe e data.",
-      discernimento: "Controlla a campione che i dati inseriti siano corretti e coerenti con il registro delle iscrizioni.",
-      diligenza: "Effettua un controllo finale su ogni lettera prima dell'invio alle famiglie."
-    },
-    emotion: { emoji: "😌", label: "Routine serena" },
-    question: "Anche in un compito ripetuto centinaia di volte, quale controllo finale non va mai saltato?"
-  },
-  {
-    role: "ata",
-    title: "Checklist di sicurezza per l'apertura della scuola",
-    category: "sicurezza",
-    scenario: "Un collaboratore scolastico chiede all'IA di aiutarlo a strutturare una checklist giornaliera dei controlli di sicurezza, come uscite, estintori e impianti.",
-    explanation: {
-      delega: "Affida all'IA la strutturazione della checklist, mantenendo la scelta dei punti di controllo obbligatori.",
-      descrizione: "Elenca ambienti, orari e normative di riferimento, come il D.Lgs. 81/2008, da includere.",
-      discernimento: "Verifica che la checklist copra davvero tutti i punti richiesti dal documento di valutazione dei rischi.",
-      diligenza: "Aggiorna la checklist ogni volta che cambiano le normative o gli spazi della scuola."
-    },
-    emotion: { emoji: "🔎", label: "Vigilanza attenta" },
-    question: "La checklist generata copre davvero tutti i punti richiesti dal documento di valutazione dei rischi della scuola?"
-  },
-  {
-    role: "ata",
-    title: "Bozza di relazione finanziaria del DSGA",
-    category: "direzione",
-    scenario: "Il Direttore dei Servizi Generali e Amministrativi usa l'IA per organizzare la struttura di una relazione sul programma annuale.",
-    explanation: {
-      delega: "Usa l'IA solo per organizzare la struttura del documento, non per calcolare le cifre.",
-      descrizione: "Specifica le sezioni obbligatorie del programma annuale da includere nella relazione.",
-      discernimento: "Confronta ogni cifra generata con i dati contabili ufficiali, senza fidarsi ciecamente del testo prodotto.",
-      diligenza: "Si assume la piena responsabilità amministrativa e contabile del documento firmato."
-    },
-    emotion: { emoji: "😟", label: "Responsabilità alta" },
-    question: "Quali parti del documento richiedono una verifica incrociata con i dati contabili ufficiali prima della pubblicazione?"
-  },
-  {
-    role: "ata",
-    title: "Guida rapida per l'uso del registro elettronico",
-    category: "tecnico",
-    scenario: "Il tecnico informatico della scuola prepara una guida passo-passo per i docenti su una nuova funzione del registro elettronico.",
-    explanation: {
-      delega: "Affida la prima stesura della guida passo-passo, mantenendo la revisione tecnica finale.",
-      descrizione: "Specifica il livello di competenza informatica dei destinatari e il formato richiesto, con passaggi numerati e screenshot.",
-      discernimento: "Verifica che i passaggi descritti corrispondano davvero alla versione del software in uso a scuola.",
-      diligenza: "Testa personalmente la procedura descritta prima di distribuire la guida ai docenti."
-    },
-    emotion: { emoji: "🤝", label: "Utilità condivisa" },
-    question: "La guida generata usa un linguaggio comprensibile anche per chi ha poca familiarità con la tecnologia?"
-  },
-  {
-    role: "ata",
-    title: "Sintetizzare i verbali di una riunione di staff",
-    category: "segreteria",
-    scenario: "Un membro della segreteria didattica usa l'IA per sintetizzare gli appunti presi durante una riunione di staff dirigenziale.",
-    explanation: {
-      delega: "Affida la sintesi degli appunti, mantenendo per sé la verifica delle decisioni prese.",
-      descrizione: "Fornisce gli appunti originali e specifica cosa deve comparire nella sintesi, come decisioni, scadenze e responsabili.",
-      discernimento: "Controlla che la sintesi non abbia omesso decisioni importanti o distorto il senso della discussione.",
-      diligenza: "Fa approvare la sintesi da chi ha presieduto la riunione prima di distribuirla."
-    },
-    emotion: { emoji: "✍️", label: "Precisione richiesta" },
-    question: "Come ci si accerta che una sintesi generata dall'IA rifletta le decisioni prese e non solo gli argomenti discussi?"
-  },
-  {
-    role: "ata",
-    title: "Comunicazione su una nuova procedura interna",
-    category: "direzione",
-    scenario: "L'ufficio del personale deve annunciare una nuova procedura per la richiesta di permessi e usa l'IA per redigere il testo.",
-    explanation: {
-      delega: "Affida la stesura del testo esplicativo, mantenendo il controllo sui contenuti normativi.",
-      descrizione: "Definisce chiaramente i passaggi della nuova procedura da comunicare al personale.",
-      discernimento: "Verifica che il testo sia coerente con il contratto collettivo e le disposizioni vigenti.",
-      diligenza: "Fa validare il contenuto normativo dal responsabile competente prima della diffusione a tutto il personale."
-    },
-    emotion: { emoji: "📋", label: "Chiarezza istituzionale" },
-    question: "Chi ha la responsabilità formale di validare il contenuto normativo prima della diffusione?"
-  },
-  {
-    role: "ata",
-    title: "Tradurre avvisi per le famiglie straniere",
-    category: "sicurezza",
-    scenario: "Un collaboratore scolastico traduce con l'IA un avviso sulle vaccinazioni obbligatorie per le famiglie di lingua rumena.",
-    explanation: {
-      delega: "Usa l'IA per una prima traduzione rapida di un avviso importante, non come versione definitiva.",
-      descrizione: "Specifica il contesto, un avviso sanitario, e il registro linguistico richiesto.",
-      discernimento: "Valuta se il registro linguistico usato è comprensibile e rispettoso per la famiglia destinataria.",
-      diligenza: "Fa rivedere la traduzione da un parlante madrelingua prima della distribuzione, trattandosi di informazioni sanitarie importanti."
-    },
-    emotion: { emoji: "🫶", label: "Delicatezza culturale" },
-    question: "In quali casi conviene far rivedere una traduzione automatica da un parlante madrelingua prima della distribuzione?"
-  },
-
-  // ---------------- DOCENTI · nuovi casi ----------------
-  {
-    role: "docente",
-    category: "comunicazione",
-    title: "Rispondere a un'email di un genitore preoccupato per un voto",
-    scenario: "Un docente riceve un'email di un genitore che chiede spiegazioni su un voto basso in una verifica di grammatica, con un tono piuttosto agitato.",
-    explanation: {
-      delega: "Decide di generare una prima bozza di risposta, ma sceglie personalmente quali argomenti tecnici includere per giustificare la valutazione.",
-      descrizione: "Fornisce all'IA il contesto, l'errore specifico e il criterio di valutazione usato, chiedendo un tono professionale ma comprensivo.",
-      discernimento: "Valuta se la bozza risponde davvero alle preoccupazioni del genitore o si limita a frasi generiche di circostanza.",
-      diligenza: "Rilegge la risposta pensando a come sarà percepita e la firma assumendosene la piena responsabilità comunicativa."
-    },
-    emotion: { emoji: "🧘", label: "Calma professionale" },
-    question: "Quali dettagli tecnici della valutazione è meglio includere sempre, anche se la bozza generata non li menziona?"
-  },
-  {
-    role: "docente",
-    category: "comunicazione",
-    title: "Preparare l'intervento per il consiglio di classe",
-    scenario: "Prima di un consiglio di classe, una docente coordinatrice vuole organizzare i punti chiave da presentare sull'andamento della classe.",
-    explanation: {
-      delega: "Affida all'IA l'organizzazione degli appunti raccolti durante il quadrimestre in una scaletta ordinata.",
-      descrizione: "Specifica quali aspetti trattare per primi, come criticità disciplinari e andamento didattico, e il tempo a disposizione.",
-      discernimento: "Verifica che la scaletta rifletta le priorità reali della classe e non un elenco generico di argomenti scolastici.",
-      diligenza: "Integra osservazioni dirette che solo lei, avendo seguito la classe, può fornire, prima di presentare l'intervento."
-    },
-    emotion: { emoji: "🗂️", label: "Ordine e prontezza" },
-    question: "Quali osservazioni sulla classe non potrebbero mai emergere da appunti scritti, ma solo dall'esperienza diretta del docente?"
-  },
-  {
-    role: "docente",
-    category: "comunicazione",
-    title: "Redigere una nota disciplinare bilanciata",
-    scenario: "Un docente deve scrivere una nota disciplinare per un episodio in classe, cercando un tono fermo ma non punitivo.",
-    explanation: {
-      delega: "Usa l'IA per una prima bozza del testo, mantenendo la decisione finale sulla gravità del provvedimento.",
-      descrizione: "Descrive i fatti accaduti in modo oggettivo, evitando giudizi, e chiede un registro istituzionale ma equilibrato.",
-      discernimento: "Controlla che il testo generato non minimizzi né drammatizzi l'accaduto rispetto alla realtà dei fatti.",
-      diligenza: "Si assume la responsabilità del provvedimento disciplinare, che resta una decisione professionale non delegabile."
-    },
-    emotion: { emoji: "⚖️", label: "Equilibrio richiesto" },
-    question: "Come si evita che un tono generato dall'IA suoni troppo severo o troppo permissivo rispetto alla situazione reale?"
-  },
-  {
-    role: "docente",
-    category: "aggiornamento",
-    title: "Sintetizzare un articolo di ricerca pedagogica",
-    scenario: "Un'insegnante vuole restare aggiornata e chiede all'IA una sintesi di un articolo scientifico complesso su nuove metodologie didattiche.",
-    explanation: {
-      delega: "Decide di farsi aiutare a comprendere i concetti chiave, riservandosi la lettura critica dei punti più rilevanti dell'articolo originale.",
-      descrizione: "Chiede una sintesi a un livello di dettaglio intermedio, con enfasi sulle implicazioni pratiche per la propria materia.",
-      discernimento: "Confronta la sintesi con l'articolo originale per verificare che non siano state distorte le conclusioni della ricerca.",
-      diligenza: "Cita correttamente la fonte se condivide la sintesi con i colleghi, evitando di presentarla come propria."
-    },
-    emotion: { emoji: "🔬", label: "Curiosità metodica" },
-    question: "Una sintesi generata dall'IA può cogliere le sfumature metodologiche di uno studio scientifico, o rischia di semplificarle troppo?"
-  },
-  {
-    role: "docente",
-    category: "aggiornamento",
-    title: "Preparare una formazione tra pari sui nuovi strumenti digitali",
-    scenario: "Un docente esperto di tecnologia deve organizzare un breve corso interno per i colleghi su uno strumento digitale appena introdotto a scuola.",
-    explanation: {
-      delega: "Affida all'IA la struttura del percorso formativo, mantenendo la scelta degli esempi pratici da usare in aula.",
-      descrizione: "Specifica il livello di partenza dei colleghi e il tempo disponibile per la formazione.",
-      discernimento: "Valuta se gli esempi proposti sono realistici per l'uso quotidiano a scuola o troppo teorici.",
-      diligenza: "Testa personalmente ogni passaggio dello strumento prima di insegnarlo ai colleghi, per non trasmettere errori."
-    },
-    emotion: { emoji: "🤝", label: "Collaborazione fiduciosa" },
-    question: "Cosa cambia nella formazione tra pari rispetto a un corso esterno, in termini di fiducia e linguaggio condiviso?"
-  },
-  {
-    role: "docente",
-    category: "aggiornamento",
-    title: "Progettare un percorso PCTO con supporto IA",
-    scenario: "Un docente tutor deve ideare un percorso di orientamento e alternanza scuola-lavoro per una classe quinta.",
-    explanation: {
-      delega: "Chiede all'IA idee di progetti PCTO coerenti con l'indirizzo di studio, mantenendo la scelta finale in base al territorio.",
-      descrizione: "Specifica l'indirizzo di studio, le competenze da sviluppare e le aziende o enti già disponibili a collaborare.",
-      discernimento: "Valuta quali proposte sono realmente realizzabili con le risorse e i contatti che la scuola ha già.",
-      diligenza: "Verifica personalmente ogni partner esterno proposto prima di attivare una convenzione ufficiale."
-    },
-    emotion: { emoji: "🧭", label: "Progettualità concreta" },
-    question: "Quali criteri concreti aiutano a distinguere un'idea di PCTO realizzabile da una solo teoricamente interessante?"
-  },
-  {
-    role: "docente",
-    category: "didattica",
-    title: "Creare un laboratorio STEM interdisciplinare",
-    scenario: "Due docenti di scienze e tecnologia vogliono progettare insieme un laboratorio che unisca le due materie per un progetto di fine anno.",
-    explanation: {
-      delega: "Usano l'IA per generare una prima proposta di struttura del laboratorio, dividendosi poi l'adattamento alla classe.",
-      descrizione: "Specificano le competenze delle due materie da integrare, la durata del laboratorio e i materiali disponibili a scuola.",
-      discernimento: "Valutano se le attività richiedono davvero competenze di entrambe le materie o solo una in modo superficiale.",
-      diligenza: "Verificano la fattibilità pratica e di sicurezza di ogni attività prima di proporla in laboratorio."
-    },
-    emotion: { emoji: "🧪", label: "Entusiasmo condiviso" },
-    question: "In un progetto interdisciplinare, come si assicura che ciascuna materia mantenga un ruolo sostanziale e non solo simbolico?"
-  },
-  {
-    role: "docente",
-    category: "valutazione",
-    title: "Analizzare i risultati di una verifica per individuare errori ricorrenti",
-    scenario: "Dopo una verifica di matematica, un docente vuole capire quali errori si ripetono più spesso nella classe per pianificare il ripasso.",
-    explanation: {
-      delega: "Affida all'IA l'analisi dei dati aggregati dei punteggi per esercizio, mantenendo la lettura pedagogica dei risultati.",
-      descrizione: "Fornisce i dati in forma anonima, solo percentuali di errore per esercizio, e chiede un'analisi dei pattern.",
-      discernimento: "Verifica se i pattern individuati corrispondono a difficoltà concettuali o solo a un esercizio mal formulato.",
-      diligenza: "Usa l'analisi come punto di partenza, integrandola con la propria osservazione diretta della classe durante la verifica."
-    },
-    emotion: { emoji: "📊", label: "Analisi metodica" },
-    question: "Come si distingue un errore che rivela una vera lacuna concettuale da uno dovuto a distrazione o a una domanda ambigua?"
-  },
-
-  // ---------------- PERSONALE ATA · nuovi casi ----------------
-  {
-    role: "ata",
-    category: "direzione",
-    title: "Bozza di determina di affidamento per una fornitura",
-    scenario: "Il DSGA deve predisporre la determina per l'affidamento di una fornitura di materiale didattico sotto una certa soglia.",
-    explanation: {
-      delega: "Usa l'IA per strutturare il documento secondo il formato standard, mantenendo la scelta del fornitore e dell'importo.",
-      descrizione: "Fornisce i riferimenti normativi applicabili e i dati specifici della fornitura da inserire nel documento.",
-      discernimento: "Controlla che tutti i riferimenti normativi citati siano aggiornati e pertinenti alla procedura specifica.",
-      diligenza: "Firma la determina assumendosi la responsabilità amministrativa e contabile dell'atto, dopo un controllo completo."
-    },
-    emotion: { emoji: "📐", label: "Rigore procedurale" },
-    question: "Quali riferimenti normativi in un atto amministrativo vanno sempre verificati sulla fonte ufficiale, anche se l'IA li cita con sicurezza?"
-  },
-  {
-    role: "ata",
-    category: "direzione",
-    title: "Sintesi del conto consuntivo per il consiglio d'istituto",
-    scenario: "Il DSGA deve preparare una sintesi comprensibile del conto consuntivo da presentare ai membri non esperti di contabilità del consiglio d'istituto.",
-    explanation: {
-      delega: "Chiede all'IA di riformulare in linguaggio semplice le voci principali del bilancio, mantenendo il controllo sui dati numerici.",
-      descrizione: "Specifica il livello di competenza contabile dei destinatari e le voci di bilancio più rilevanti da evidenziare.",
-      discernimento: "Verifica che la semplificazione non abbia alterato il significato delle voci contabili originali.",
-      diligenza: "Ricontrolla ogni cifra riportata nella sintesi rispetto al documento contabile ufficiale prima della presentazione."
-    },
-    emotion: { emoji: "🧮", label: "Precisione richiesta" },
-    question: "Semplificare un linguaggio tecnico per un pubblico non esperto rischia mai di perdere informazioni importanti?"
-  },
-  {
-    role: "ata",
-    category: "direzione",
-    title: "Preparare il report delle assenze del personale per la dirigenza",
-    scenario: "L'ufficio del personale deve preparare un report mensile sulle assenze del personale docente e ATA per la dirigenza.",
-    explanation: {
-      delega: "Usa l'IA per organizzare i dati grezzi in un formato di report leggibile, mantenendo il controllo sull'estrazione dei dati originali.",
-      descrizione: "Specifica quali categorie di assenza distinguere, come malattia, permesso o formazione, e il periodo di riferimento.",
-      discernimento: "Controlla che i totali calcolati corrispondano ai dati reali presenti nel sistema di gestione del personale.",
-      diligenza: "Tratta il report con la dovuta riservatezza, trattandosi di dati personali del personale scolastico."
-    },
-    emotion: { emoji: "🔒", label: "Riservatezza attenta" },
-    question: "Quali accorgimenti di privacy vanno presi quando si elabora un report che contiene dati personali del personale scolastico?"
-  },
-  {
-    role: "ata",
-    category: "tecnico",
-    title: "Configurare un modulo per un sondaggio interno",
-    scenario: "Il tecnico informatico deve creare un modulo online per raccogliere le preferenze del personale su un corso di aggiornamento.",
-    explanation: {
-      delega: "Chiede all'IA di generare la struttura delle domande del sondaggio, mantenendo la scelta finale delle opzioni di risposta.",
-      descrizione: "Specifica l'obiettivo del sondaggio, il numero di domande desiderato e il tipo di risposta richiesta.",
-      discernimento: "Valuta se le domande proposte sono davvero chiare e non ambigue per chi le compilerà.",
-      diligenza: "Testa il modulo personalmente prima di inviarlo a tutto il personale, per evitare errori tecnici."
-    },
-    emotion: { emoji: "🖥️", label: "Efficienza operativa" },
-    question: "Una domanda di sondaggio ambigua può falsare i risultati anche se il modulo è tecnicamente perfetto: come si individua in anticipo?"
-  },
-  {
-    role: "ata",
-    category: "tecnico",
-    title: "Risolvere un problema ricorrente di accesso al registro elettronico",
-    scenario: "Diversi docenti segnalano difficoltà ricorrenti nell'accesso al registro elettronico e il tecnico chiede all'IA supporto per diagnosticare la causa.",
-    explanation: {
-      delega: "Usa l'IA per esplorare le possibili cause tecniche del problema, mantenendo il controllo diretto sui test reali sul sistema.",
-      descrizione: "Descrive i sintomi esatti riportati dai docenti e la configurazione del sistema in uso a scuola.",
-      discernimento: "Verifica quale delle ipotesi proposte corrisponde davvero al problema riscontrato nei test reali.",
-      diligenza: "Documenta la soluzione trovata in una guida interna, per evitare di ripetere la stessa diagnosi in futuro."
-    },
-    emotion: { emoji: "🔧", label: "Problem solving paziente" },
-    question: "Quando conviene fermarsi e contattare l'assistenza ufficiale della piattaforma, invece di continuare a cercare la causa da soli?"
-  },
-  {
-    role: "ata",
-    category: "tecnico",
-    title: "Preparare un tutorial per l'uso della LIM in aula",
-    scenario: "Il tecnico informatico vuole creare un breve tutorial illustrato per aiutare i docenti meno esperti a usare la lavagna interattiva multimediale.",
-    explanation: {
-      delega: "Affida all'IA la stesura dei passaggi testuali del tutorial, occupandosi personalmente degli screenshot e delle immagini.",
-      descrizione: "Specifica il modello di LIM in uso a scuola e le funzioni più richieste dai docenti, come scrittura e proiezione.",
-      discernimento: "Verifica che i passaggi descritti corrispondano esattamente al modello e alla versione software realmente in uso.",
-      diligenza: "Aggiorna il tutorial ogni volta che cambia la versione del software, per non lasciare istruzioni obsolete in circolazione."
-    },
-    emotion: { emoji: "📽️", label: "Chiarezza pratica" },
-    question: "Un tutorial scritto per un modello di LIM generico funziona davvero per quello specifico in uso nella tua scuola?"
-  },
-  {
-    role: "ata",
-    category: "tecnico",
-    title: "Organizzare il backup dei dati scolastici in cloud",
-    scenario: "Il tecnico informatico deve pianificare una nuova procedura di backup periodico dei dati amministrativi della scuola su cloud.",
-    explanation: {
-      delega: "Chiede all'IA una proposta di calendario e struttura per i backup, mantenendo la decisione su quali dati includere.",
-      descrizione: "Specifica la quantità di dati, la frequenza richiesta dalla normativa sulla conservazione e lo spazio disponibile.",
-      discernimento: "Valuta se la proposta rispetta davvero i tempi di conservazione obbligatori per i documenti scolastici.",
-      diligenza: "Verifica periodicamente che i backup vengano effettuati correttamente, senza fidarsi solo della pianificazione iniziale."
-    },
-    emotion: { emoji: "☁️", label: "Prevenzione metodica" },
-    question: "Con quale frequenza andrebbe verificato che un backup pianificato stia davvero funzionando, e non solo che sia stato programmato?"
-  },
-  {
-    role: "ata",
-    category: "sicurezza",
-    title: "Redigere il piano di evacuazione aggiornato per un'ala della scuola",
-    scenario: "Dopo alcuni lavori di ristrutturazione, un collaboratore scolastico deve aiutare ad aggiornare il piano di evacuazione di un'ala dell'edificio.",
-    explanation: {
-      delega: "Usa l'IA per riorganizzare il testo del piano esistente con le nuove planimetrie, mantenendo il sopralluogo fisico come verifica finale.",
-      descrizione: "Fornisce le nuove planimetrie e le modifiche strutturali avvenute rispetto al piano precedente.",
-      discernimento: "Verifica sul posto che i percorsi di evacuazione descritti siano davvero percorribili dopo i lavori.",
-      diligenza: "Fa approvare il piano aggiornato dal responsabile della sicurezza prima di renderlo operativo."
-    },
-    emotion: { emoji: "🚪", label: "Vigilanza concreta" },
-    question: "Un piano di evacuazione aggiornato solo sulla carta, senza un sopralluogo fisico, può considerarsi davvero affidabile?"
-  },
-  {
-    role: "ata",
-    category: "sicurezza",
-    title: "Comunicare a un fornitore esterno le procedure di accesso all'edificio",
-    scenario: "Un collaboratore scolastico deve scrivere una comunicazione chiara per un'impresa di manutenzione che dovrà accedere alla scuola durante l'orario delle lezioni.",
-    explanation: {
-      delega: "Chiede all'IA una bozza delle istruzioni di accesso, mantenendo la decisione sugli orari e le zone consentite.",
-      descrizione: "Specifica gli orari scolastici da rispettare, le zone accessibili e le norme di sicurezza da seguire.",
-      discernimento: "Controlla che le istruzioni siano compatibili con la reale organizzazione della giornata scolastica.",
-      diligenza: "Verifica che il fornitore abbia effettivamente ricevuto e compreso le istruzioni prima del giorno dell'intervento."
-    },
-    emotion: { emoji: "📥", label: "Coordinamento attento" },
-    question: "Cosa succede se le istruzioni di accesso non tengono conto di un imprevisto, come un cambio orario improvviso?"
-  },
-  {
-    role: "ata",
-    category: "sicurezza",
-    title: "Preparare un vademecum per la vigilanza durante l'intervallo",
-    scenario: "Un gruppo di collaboratori scolastici vuole uniformare le regole di vigilanza durante l'intervallo tra i vari turni e postazioni.",
-    explanation: {
-      delega: "Usa l'IA per organizzare in un documento unico le regole già in uso informalmente tra i colleghi.",
-      descrizione: "Descrive le zone da coprire, i turni esistenti e le criticità osservate nei mesi precedenti.",
-      discernimento: "Verifica che il documento rifletta davvero la situazione reale della scuola e non solo prassi generiche.",
-      diligenza: "Condivide il vademecum con tutti i colleghi e lo aggiorna se emergono nuove criticità durante l'anno."
-    },
-    emotion: { emoji: "👀", label: "Attenzione condivisa" },
-    question: "Come si assicura che un vademecum scritto venga davvero seguito nella pratica quotidiana, e non resti solo un documento formale?"
-  }
-];
-
-let currentRole = "tutti";
-let currentCategory = "tutte";
-let currentPool = [...CASES];
-let lastIndex = -1;
-
-const stage = document.getElementById('stage');
-const countNote = document.getElementById('countNote');
-const browseList = document.getElementById('browseList');
-const browseToggle = document.getElementById('browseToggle');
-const categorySelect = document.getElementById('categorySelect');
-
-function filterCases(role, category) {
-  return CASES.filter(c => {
-    const roleOk = role === "tutti" || c.role === role;
-    const catOk = category === "tutte" || c.category === category;
-    return roleOk && catOk;
-  });
-}
-
-function populateCategorySelect(role) {
-  let options = '<option value="tutte">Tutte le sottocategorie</option>';
-  if (role === "docente" || role === "ata") {
-    options += CATEGORIES_BY_ROLE[role].map(cat =>
-      `<option value="${cat}">${CATEGORY_LABELS[cat]}</option>`
-    ).join("");
-  } else {
-    options += '<optgroup label="Docenti">' +
-      CATEGORIES_BY_ROLE.docente.map(cat => `<option value="${cat}">${CATEGORY_LABELS[cat]}</option>`).join("") +
-      '</optgroup><optgroup label="Personale ATA">' +
-      CATEGORIES_BY_ROLE.ata.map(cat => `<option value="${cat}">${CATEGORY_LABELS[cat]}</option>`).join("") +
-      '</optgroup>';
-  }
-  categorySelect.innerHTML = options;
-  currentCategory = "tutte";
-}
-
-function updateCountNote() {
-  countNote.textContent = currentPool.length + " casi disponibili con questi filtri.";
-}
-
-const D_ORDER = ["delega", "descrizione", "discernimento", "diligenza"];
-
-function renderCase(c) {
-  const tags = D_ORDER.map(k => `<span class="tag ${k}">${D_LABELS[k]}</span>`).join("");
-  const roleLabel = c.role === "docente" ? "Sezione Docenti" : "Sezione Personale ATA";
-  const rolePillClass = c.role === "ata" ? "role-pill ata" : "role-pill";
-
-  const dBlocks = D_ORDER.map(k => `
-    <div class="d-block ${k}">
-      <div class="d-block-label ${k}">${D_LABELS[k]}</div>
-      <p>${c.explanation[k]}</p>
-    </div>
-  `).join("");
-
-  stage.innerHTML = `
-    <div class="case-flip" tabindex="0" role="button" aria-pressed="false" aria-label="${c.title}: tocca per vedere l'applicazione delle 4D">
-      <div class="case-flip-inner">
-        <div class="case-face case-front">
-          <div class="case-top">
-            <div class="case-top-left">
-              <span class="${rolePillClass}">${roleLabel}</span>
-              <span class="category-pill">${CATEGORY_LABELS[c.category]}</span>
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-500 flex items-center justify-center text-white font-heading font-extrabold text-xl shadow-md shadow-indigo-200">
+                    4D
+                </div>
+                <div>
+                    <span class="font-heading font-bold text-lg text-slate-900 leading-none block">Diligenza · Discernimento · Delega · Descrizione</span>
+                    <span class="text-xs text-slate-500">L'IA nella Scuola Italiana e nella Vita Pratica</span>
+                </div>
             </div>
-            <span class="emotion-pill"><span class="emotion-emoji">${c.emotion.emoji}</span>${c.emotion.label}</span>
-          </div>
-          <h3>${c.title}</h3>
-          <div class="case-block">
-            <div class="label">Scenario</div>
-            <p>${c.scenario}</p>
-          </div>
-          <button type="button" class="case-flip-hint-btn">↻ Tocca per l'applicazione delle 4D</button>
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600">
+                <a href="#competenze" class="hover:text-indigo-600 transition-colors">Le 4 Competenze</a>
+                <a href="#vita-quotidiana" class="hover:text-indigo-600 transition-colors flex items-center gap-1.5 text-amber-700 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200"><i class="fa-solid fa-house-laptop"></i> Vita Pratica</a>
+                <a href="#generatore" class="hover:text-indigo-600 transition-colors">Casi di Studio (40)</a>
+                <a href="#origine" class="hover:text-indigo-600 transition-colors">Origine</a>
+            </nav>
+            <a href="#generatore" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-lg shadow-sm transition-all hover:shadow flex items-center space-x-2">
+                <i class="fa-solid font-bold fa-dice"></i>
+                <span>Genera Caso</span>
+            </a>
         </div>
-        <div class="case-face case-back">
-          <div class="case-top">
-            <div class="case-top-left">
-              <span class="${rolePillClass}">${roleLabel}</span>
-              <span class="category-pill">${CATEGORY_LABELS[c.category]}</span>
+    </header>
+
+    <main class="flex-grow">
+        <section class="relative bg-gradient-to-b from-indigo-50/70 via-white to-slate-50 py-12 md:py-16 border-b border-slate-100">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+                <div class="inline-flex items-center space-x-2 bg-indigo-100/80 text-indigo-800 text-xs font-semibold px-3 py-1 rounded-full mb-4 border border-indigo-200">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Guida Metodologica per la Scuola & Metafore di Vita Quotidiana</span>
+                </div>
+                <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+                    Il framework che aiuta a lavorare bene con l'intelligenza artificiale.
+                </h1>
+                <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+                    Decidere, comunicare, valutare, rispondere: quattro competenze per usare l'IA in modo consapevole, dalla vita di tutti i giorni alla programmazione scolastica.
+                </p>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <a href="#competenze" class="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-slate-800 shadow-md transition-all flex items-center space-x-2">
+                        <span>Esplora le 4 Competenze</span>
+                        <i class="fa-solid fa-arrow-down text-xs"></i>
+                    </a>
+                    <a href="#vita-quotidiana" class="bg-amber-500 text-white px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-amber-600 shadow-md transition-all flex items-center space-x-2">
+                        <i class="fa-solid fa-plug"></i>
+                        <span>Esempi Vita Pratica</span>
+                    </a>
+                    <a href="#generatore" class="bg-white text-slate-700 border border-slate-300 px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-slate-50 shadow-sm transition-all flex items-center space-x-2">
+                        <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                        <span>Generatore Casi Reali</span>
+                    </a>
+                </div>
             </div>
-          </div>
-          <h3>${c.title}</h3>
-          <div class="case-block">
-            <div class="label">Come si applica il framework 4D</div>
-            <div class="d-grid">${dBlocks}</div>
-          </div>
-          <div class="question-block">
-            <div class="label">Domanda per la discussione</div>
-            <p>${c.question}</p>
-          </div>
-          <button type="button" class="case-flip-hint-btn">↻ Torna allo scenario</button>
-        </div>
-      </div>
+        </section>
+
+        <section id="competenze" class="py-12 md:py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <h2 class="font-heading text-2xl sm:text-3xl font-bold text-slate-900 mb-3">Le quattro competenze</h2>
+                <p class="text-slate-600 text-sm sm:text-base mb-6">
+                    Non sono passaggi da eseguire una volta sola, ma un ciclo continuo che si ripete ogni volta che si lavora con l'IA: si decide, si comunica, si valuta, ci si assume la responsabilità.
+                </p>
+                
+                <!-- Context Toggle Switcher (A scuola VS Vita Quotidiana) -->
+                <div class="inline-flex p-1 bg-slate-200/80 rounded-xl mb-4">
+                    <button id="btn-mode-scuola" onclick="setCardContext('scuola')" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-indigo-600 text-white shadow-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-school"></i>
+                        <span>Esempi a Scuola</span>
+                    </button>
+                    <button id="btn-mode-vita" onclick="setCardContext('vita')" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900 flex items-center space-x-2">
+                        <i class="fa-solid fa-house-laptop"></i>
+                        <span>Esempi Vita Pratica (Elettrodomestici/GPS)</span>
+                    </button>
+                </div>
+
+                <p class="text-xs text-indigo-600 font-semibold">
+                    <i class="fa-solid fa-hand-pointer mr-1"></i> Clicca sulle schede per girarle e scoprire gli esempi
+                </p>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Card 1: Delega -->
+                <div class="card-flip-container perspective h-80 cursor-pointer" onclick="toggleCard(this)">
+                    <div class="card-flipper relative w-full h-full duration-500 transform-style-3d shadow-md hover:shadow-xl rounded-2xl transition-all">
+                        <!-- Front -->
+                        <div class="absolute w-full h-full rounded-2xl p-6 bg-white border-2 border-blue-200 flex flex-col justify-between backface-hidden">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">1 · Decidere</span>
+                                    <i class="fa-solid fa-diagram-project text-blue-500 text-xl"></i>
+                                </div>
+                                <h3 class="font-heading text-2xl font-bold text-slate-900 mb-2">Delega</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">
+                                    Capire se, quando e come coinvolgere l'IA in un compito, distinguendo cosa affidarle da cosa va tenuto in mano propria.
+                                </p>
+                            </div>
+                            <div class="text-xs font-semibold text-blue-600 flex items-center justify-between border-t border-slate-100 pt-3">
+                                <span class="card-back-label">↻ Tocca per l'esempio a scuola</span>
+                                <i class="fa-solid fa-rotate text-xs"></i>
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute w-full h-full rounded-2xl p-6 bg-blue-600 text-white flex flex-col justify-between backface-hidden rotate-y-180">
+                            <div>
+                                <div class="flex items-center justify-between mb-3 text-blue-200 text-xs font-semibold">
+                                    <span class="card-context-badge">A SCUOLA</span>
+                                    <i class="fa-solid card-context-icon fa-school"></i>
+                                </div>
+                                <h3 class="font-heading text-xl font-bold mb-2 text-white">Delega</h3>
+                                <p class="card-text-scuola text-blue-50 text-sm leading-relaxed font-medium">
+                                    Si delega la prima bozza di una circolare, mai la decisione su un provvedimento disciplinare.
+                                </p>
+                                <p class="card-text-vita hidden text-blue-50 text-sm leading-relaxed font-medium">
+                                    <strong>Lavastoviglie:</strong> Deleghi il lavaggio dei piatti quotidiani; NON deleghi il lavaggio a mano del cristallo antico o la scelta del detersivo per pelli sensibili.
+                                </p>
+                            </div>
+                            <div class="text-xs font-semibold text-blue-200 flex items-center justify-between border-t border-blue-500/50 pt-3">
+                                <span>↻ Tocca per tornare</span>
+                                <i class="fa-solid fa-arrow-left text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Descrizione -->
+                <div class="card-flip-container perspective h-80 cursor-pointer" onclick="toggleCard(this)">
+                    <div class="card-flipper relative w-full h-full duration-500 transform-style-3d shadow-md hover:shadow-xl rounded-2xl transition-all">
+                        <!-- Front -->
+                        <div class="absolute w-full h-full rounded-2xl p-6 bg-white border-2 border-teal-200 flex flex-col justify-between backface-hidden">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-xs font-bold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-md border border-teal-100">2 · Comunicare</span>
+                                    <i class="fa-solid fa-pen-nib text-teal-600 text-xl"></i>
+                                </div>
+                                <h3 class="font-heading text-2xl font-bold text-slate-900 mb-2">Descrizione</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">
+                                    Spiegare con chiarezza l'obiettivo, dando contesto, vincoli e formato, così l'IA produce un output davvero utile.
+                                </p>
+                            </div>
+                            <div class="text-xs font-semibold text-teal-700 flex items-center justify-between border-t border-slate-100 pt-3">
+                                <span class="card-back-label">↻ Tocca per l'esempio a scuola</span>
+                                <i class="fa-solid fa-rotate text-xs"></i>
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute w-full h-full rounded-2xl p-6 bg-teal-700 text-white flex flex-col justify-between backface-hidden rotate-y-180">
+                            <div>
+                                <div class="flex items-center justify-between mb-3 text-teal-200 text-xs font-semibold">
+                                    <span class="card-context-badge">A SCUOLA</span>
+                                    <i class="fa-solid card-context-icon fa-school"></i>
+                                </div>
+                                <h3 class="font-heading text-xl font-bold mb-2 text-white">Descrizione</h3>
+                                <p class="card-text-scuola text-teal-50 text-sm leading-relaxed font-medium">
+                                    Più contesto dai — classe, obiettivo, formato — più il risultato sarà pronto all'uso.
+                                </p>
+                                <p class="card-text-vita hidden text-teal-50 text-sm leading-relaxed font-medium">
+                                    <strong>Impostazione Elettrodomestico:</strong> Scegli il programma di lavaggio corretto ("Eco 50°", "Delicato" o "Intensivo") o imposti sul GPS le preferenze ("Evita autostrade").
+                                </p>
+                            </div>
+                            <div class="text-xs font-semibold text-teal-200 flex items-center justify-between border-t border-teal-600/50 pt-3">
+                                <span>↻ Tocca per tornare</span>
+                                <i class="fa-solid fa-arrow-left text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Discernimento -->
+                <div class="card-flip-container perspective h-80 cursor-pointer" onclick="toggleCard(this)">
+                    <div class="card-flipper relative w-full h-full duration-500 transform-style-3d shadow-md hover:shadow-xl rounded-2xl transition-all">
+                        <!-- Front -->
+                        <div class="absolute w-full h-full rounded-2xl p-6 bg-white border-2 border-amber-200 flex flex-col justify-between backface-hidden">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100">3 · Valutare</span>
+                                    <i class="fa-solid fa-magnifying-glass font-bold text-amber-600 text-xl"></i>
+                                </div>
+                                <h3 class="font-heading text-2xl font-bold text-slate-900 mb-2">Discernimento</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">
+                                    Giudicare se ciò che l'IA ha prodotto è corretto, pertinente e sicuro, senza scambiare un testo scorrevole per un testo vero.
+                                </p>
+                            </div>
+                            <div class="text-xs font-semibold text-amber-700 flex items-center justify-between border-t border-slate-100 pt-3">
+                                <span class="card-back-label">↻ Tocca per l'esempio a scuola</span>
+                                <i class="fa-solid fa-rotate text-xs"></i>
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute w-full h-full rounded-2xl p-6 bg-amber-600 text-white flex flex-col justify-between backface-hidden rotate-y-180">
+                            <div>
+                                <div class="flex items-center justify-between mb-3 text-amber-200 text-xs font-semibold">
+                                    <span class="card-context-badge">A SCUOLA</span>
+                                    <i class="fa-solid card-context-icon fa-school"></i>
+                                </div>
+                                <h3 class="font-heading text-xl font-bold mb-2 text-white">Discernimento</h3>
+                                <p class="card-text-scuola text-amber-50 text-sm leading-relaxed font-medium">
+                                    Un testo ben scritto non è automaticamente corretto: va confrontato con ciò che sai della classe.
+                                </p>
+                                <p class="card-text-vita hidden text-amber-50 text-sm leading-relaxed font-medium">
+                                    <strong>Controllo Risultato:</strong> Verifichi se la padella incrostata è davvero pulita o se il navigatore ti sta facendo passare per un sentiero sterrato inagibile.
+                                </p>
+                            </div>
+                            <div class="text-xs font-semibold text-amber-200 flex items-center justify-between border-t border-amber-500/50 pt-3">
+                                <span>↻ Tocca per tornare</span>
+                                <i class="fa-solid fa-arrow-left text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Diligenza -->
+                <div class="card-flip-container perspective h-80 cursor-pointer" onclick="toggleCard(this)">
+                    <div class="card-flipper relative w-full h-full duration-500 transform-style-3d shadow-md hover:shadow-xl rounded-2xl transition-all">
+                        <!-- Front -->
+                        <div class="absolute w-full h-full rounded-2xl p-6 bg-white border-2 border-red-200 flex flex-col justify-between backface-hidden">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-xs font-bold text-red-700 bg-red-50 px-2.5 py-1 rounded-md border border-red-100">4 · Rispondere</span>
+                                    <i class="fa-solid fa-shield-halved text-red-600 text-xl"></i>
+                                </div>
+                                <h3 class="font-heading text-2xl font-bold text-slate-900 mb-2">Diligenza</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">
+                                    Prendersi la responsabilità di come viene usato l'output: verifica, attribuzione, conseguenze prima di condividerlo.
+                                </p>
+                            </div>
+                            <div class="text-xs font-semibold text-red-700 flex items-center justify-between border-t border-slate-100 pt-3">
+                                <span class="card-back-label">↻ Tocca per l'esempio a scuola</span>
+                                <i class="fa-solid fa-rotate text-xs"></i>
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute w-full h-full rounded-2xl p-6 bg-red-600 text-white flex flex-col justify-between backface-hidden rotate-y-180">
+                            <div>
+                                <div class="flex items-center justify-between mb-3 text-red-200 text-xs font-semibold">
+                                    <span class="card-context-badge">A SCUOLA</span>
+                                    <i class="fa-solid card-context-icon fa-school"></i>
+                                </div>
+                                <h3 class="font-heading text-xl font-bold mb-2 text-white">Diligenza</h3>
+                                <p class="card-text-scuola text-red-50 text-sm leading-relaxed font-medium">
+                                    Firma, fonti, privacy: la responsabilità finale resta sempre della persona, mai dello strumento.
+                                </p>
+                                <p class="card-text-vita hidden text-red-50 text-sm leading-relaxed font-medium">
+                                    <strong>Responsabilità Finale:</strong> La responsabilità della guida resta del conducente e non del GPS; l'igiene delle stoviglie e la cura della casa restano umane.
+                                </p>
+                            </div>
+                            <div class="text-xs font-semibold text-red-200 flex items-center justify-between border-t border-red-500/50 pt-3">
+                                <span>↻ Tocca per tornare</span>
+                                <i class="fa-solid fa-arrow-left text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Cycle Note -->
+            <div class="mt-8 bg-indigo-50/80 border border-indigo-100 rounded-2xl p-4 sm:p-5 flex items-start space-x-3 text-slate-700 text-sm">
+                <i class="fa-solid fa-arrows-spin text-indigo-600 text-xl mt-0.5 flex-shrink-0"></i>
+                <p>
+                    <strong class="text-indigo-900">Il ciclo si chiude e riparte:</strong> ogni nuova delega nasce spesso da ciò che si è imparato valutando l'ultimo output. Rispondere del risultato consente di affinare costantemente i prompt futuri e l'efficacia del lavoro scolastico e personale.
+                </p>
+            </div>
+        </section>
+
+        <section id="vita-quotidiana" class="py-12 md:py-16 bg-gradient-to-br from-amber-50/80 via-orange-50/40 to-slate-50 border-y border-amber-200/60">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-10">
+                    <span class="inline-block bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full border border-amber-200 mb-2">
+                        <i class="fa-solid fa-house-user mr-1"></i> Esempi della Vita Pratica
+                    </span>
+                    <h2 class="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">
+                        Cosa delegare e cosa no: il parallelismo con la vita quotidiana
+                    </h2>
+                    <p class="text-slate-600 text-sm sm:text-base">
+                        Usiamo già il framework 4D ogni giorno senza accorgercene quando usiamo elettrodomestici, navigatori o strumenti automatizzati. Ecco come applicare lo stesso ragionamento all'IA.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Box 1: Lavastoviglie -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-200/80 hover:shadow-md transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-soap"></i>
+                        </div>
+                        <h3 class="font-heading text-lg font-bold text-slate-900 mb-1">Lavastoviglie</h3>
+                        <p class="text-xs font-semibold text-amber-700 mb-3">Elettrodomestico di casa</p>
+                        <ul class="text-xs text-slate-600 space-y-2">
+                            <li class="flex items-start gap-1.5">
+                                <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                                <span><strong>Cosa deleghi:</strong> Lavaggio e asciugatura dei piatti quotidiani.</span>
+                            </li>
+                            <li class="flex items-start gap-1.5">
+                                <i class="fa-solid fa-xmark text-red-500 mt-0.5"></i>
+                                <span><strong>Cosa TENERE per te:</strong> Lavaggio manuale del cristallo di valore o bicchieri antichi.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Box 2: Navigatore GPS -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-200/80 hover:shadow-md transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-location-arrow"></i>
+                        </div>
+                        <h3 class="font-heading text-lg font-bold text-slate-900 mb-1">Navigatore GPS</h3>
+                        <p class="text-xs font-semibold text-blue-700 mb-3">Guida e Viaggi</p>
+                        <ul class="text-xs text-slate-600 space-y-2">
+                            <li class="flex items-start gap-1.5">
+                                <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                                <span><strong>Cosa deleghi:</strong> Calcolo del percorso e monitoraggio del traffico.</span>
+                            </li>
+                            <li class="flex items-start gap-1.5">
+                                <i class="fa-solid fa-xmark text-red-500 mt-0.5"></i>
+                                <span><strong>Cosa TENERE per te:</strong> Decisione di guida, rispetto dei limiti e sicurezza visiva della strada.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Box 3: Robot da Cucina -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-200/80 hover:shadow-md transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-blender"></i>
+                        </div>
+                        <h3 class="font-heading text-lg font-bold text-slate-900 mb-1">Robot da Cucina</h3>
+                        <p class="text-xs font-semibold text-teal-700 mb-3">Preparazione pasti</p>
+                        <ul class="text-xs text-slate-600 space-y-2">
+                            <li class="flex items-start gap-1.5">
+                                <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                                <span><strong>Cosa deleghi:</strong> Tritatura, mescolamento costante e cottura temporizzata.</span>
+                            </li>
+                            <li class="flex items-start gap-1.5">
+                                <i class="fa-solid fa-xmark text-red-500 mt-0.5"></i>
+                                <span><strong>Cosa TENERE per te:</strong> Assaggio finale, dosaggio spezie e controllo allergeni per ospiti.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Box 4: Robot Aspirapolvere -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-200/80 hover:shadow-md transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <h3 class="font-heading text-lg font-bold text-slate-900 mb-1">Robot Aspirapolvere</h3>
+                        <p class="text-xs font-semibold text-purple-700 mb-3">Igiene domestica</p>
+                        <ul class="text-xs text-slate-600 space-y-2">
+                            <li class="flex items-start gap-1.5">
+                                <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                                <span><strong>Cosa deleghi:</strong> Raccolta polvere ordinaria nelle stanze aperte.</span>
+                            </li>
+                            <li class="flex items-start gap-1.5">
+                                <i class="fa-solid fa-xmark text-red-500 mt-0.5"></i>
+                                <span><strong>Cosa TENERE per te:</strong> Sistemare cavi/oggetti da terra e svuotamento del serbatoio.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="mt-8 bg-white/80 border border-amber-200 rounded-2xl p-4 sm:p-6 text-slate-700 text-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500 text-white flex items-center justify-center text-2xl shrink-0">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-heading font-bold text-slate-900">Il Principio Chiave per la Scuola</h4>
+                            <p class="text-xs sm:text-sm text-slate-600">Così come non faresti guidare la macchina al navigatore senza guardare la strada, allo stesso modo con l'IA deleghi la stesura materiale delle bozze, ma mantieni la responsabilità pedagogica e formale.</p>
+                        </div>
+                    </div>
+                    <a href="#generatore" class="shrink-0 bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-slate-800 transition-all">
+                        Prova i Casi Scuola
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="generatore" class="py-12 bg-slate-900 text-white relative overflow-hidden">
+            <!-- Background Glow -->
+            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-3xl mx-auto mb-8">
+                    <span class="text-indigo-400 font-semibold text-xs tracking-wider uppercase mb-2 block">Strumento Pratico di Formazione</span>
+                    <h2 class="font-heading text-3xl sm:text-4xl font-extrabold mb-3">Genera un caso di studio</h2>
+                    <p class="text-slate-300 text-sm sm:text-base">
+                        40 situazioni reali di scuola, organizzate nelle categorie di ruolo e collegate a tutte e 4 le D, con una domanda per la discussione in aula docenti o in un corso di formazione.
+                    </p>
+                </div>
+
+                <!-- Controls & Filters -->
+                <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-4 sm:p-6 mb-8 backdrop-blur-md shadow-2xl">
+                    <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                        <!-- Role / Filter Tabs -->
+                        <div class="flex flex-wrap gap-2 w-full md:w-auto" id="filter-buttons">
+                            <button data-filter="Tutti" onclick="setFilter('Tutti')" class="filter-btn active bg-indigo-600 text-white text-xs sm:text-sm font-medium px-3.5 py-2 rounded-xl transition-all">Tutti (40)</button>
+                            <button data-filter="Docenti" onclick="setFilter('Docenti')" class="filter-btn bg-slate-700 text-slate-300 hover:bg-slate-600 text-xs sm:text-sm font-medium px-3.5 py-2 rounded-xl transition-all">Docenti (23)</button>
+                            <button data-filter="ATA" onclick="setFilter('ATA')" class="filter-btn bg-slate-700 text-slate-300 hover:bg-slate-600 text-xs sm:text-sm font-medium px-3.5 py-2 rounded-xl transition-all">ATA e Segreteria (6)</button>
+                            <button data-filter="Dirigenza" onclick="setFilter('Dirigenza')" class="filter-btn bg-slate-700 text-slate-300 hover:bg-slate-600 text-xs sm:text-sm font-medium px-3.5 py-2 rounded-xl transition-all">Dirigenza e Staff (11)</button>
+                        </div>
+
+                        <!-- Generator Button -->
+                        <button onclick="generateRandomCase()" class="w-full md:w-auto bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white font-bold text-sm px-6 py-3 rounded-xl shadow-lg hover:shadow-indigo-500/25 transition-all flex items-center justify-center space-x-2 shrink-0">
+                            <i class="fa-solid fa-dice text-base animate-spin-hover"></i>
+                            <span>Genera un caso</span>
+                        </button>
+                    </div>
+
+                    <!-- Search and Selector (Dynamically Filtered to selected category) -->
+                    <div class="mt-4 pt-4 border-t border-slate-700/60 flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-grow">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                            <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Cerca tra i casi della categoria selezionata..." class="w-full bg-slate-900/90 border border-slate-700 text-white text-xs sm:text-sm rounded-xl pl-9 pr-4 py-2.5 focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <select id="scenario-dropdown" onchange="selectScenarioFromDropdown(this.value)" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs sm:text-sm rounded-xl px-3 py-2.5 focus:outline-none focus:border-indigo-500 max-w-xs">
+                            <option value="">-- Seleziona un caso della categoria --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Case Display Card -->
+                <div id="case-display" class="bg-white text-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-100 min-h-[400px] flex flex-col justify-between transition-all">
+                    <!-- Dynamic content rendered by JS -->
+                </div>
+
+            </div>
+        </section>
+
+        <section id="origine" class="py-12 md:py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-800">
+                <div class="max-w-3xl">
+                    <span class="inline-block bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                        Origine Scientifica & Collaborazione
+                    </span>
+                    <h2 class="font-heading text-2xl sm:text-3xl font-extrabold mb-4 text-white">
+                        Da dove viene il framework 4D
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+                        Nasce da una collaborazione accademica con <strong>Anthropic</strong> ed è oggi alla base di corsi di formazione gratuiti seguiti da centinaia di migliaia di persone.
+                    </p>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                        Il framework è stato ideato dai professori <strong>Rick Dakan</strong> (Ringling College of Art and Design) e <strong>Joseph Feller</strong> (University College Cork), tra il 2023 e il 2024, per dare anche a chi non lavora nel settore tecnologico un vocabolario condiviso per collaborare con l'IA in modo efficace, efficiente, etico e sicuro.
+                    </p>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
+                        Anthropic ha successivamente adottato il modello come base della propria formazione pubblica, collaborando con i due autori allo sviluppo di una serie di corsi gratuiti — tra cui percorsi dedicati a scuola e no-profit — che hanno raccolto oltre un milione di iscrizioni complessive.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 pt-2 border-t border-slate-800">
+                        <a href="https://www-cdn.anthropic.com/b383cf6baddbfc72fdf8b0ed533a518e2872d531.pdf" target="_blank" rel="noopener noreferrer" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition-all inline-flex items-center space-x-2">
+                            <span>Documento ufficiale (PDF, Anthropic)</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </a>
+                        <a href="https://www.coursera.org/learn/ai-fluency-framework-foundations" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition-all inline-flex items-center space-x-2">
+                            <span>Corso: AI Fluency: Framework & Foundations</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Custom Toast Notification for Copying -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-slate-700 hidden flex items-center space-x-3 transition-all">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toast-message" class="text-xs sm:text-sm font-medium">Caso di studio copiato negli appunti!</span>
     </div>
-  `;
-}
 
-function generateRandom() {
-  if (currentPool.length === 0) return;
-  let idx;
-  if (currentPool.length === 1) {
-    idx = 0;
-  } else {
-    do {
-      idx = Math.floor(Math.random() * currentPool.length);
-    } while (idx === lastIndex);
-  }
-  lastIndex = idx;
-  renderCase(currentPool[idx]);
-}
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-8 text-xs sm:text-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div>
+                <p class="text-slate-300 font-medium mb-1">
+                    Contenuto ispirato all'AI Fluency Framework (Delegation, Description, Discernment, Diligence) sviluppato con Anthropic.
+                </p>
+                <p class="text-slate-500">
+                    Applicazione didattica per la scuola italiana e l'uso consapevole della tecnologia.
+                </p>
+            </div>
+            <div class="text-slate-400 font-semibold bg-slate-800/80 px-3.5 py-1.5 rounded-lg border border-slate-700">
+                @2026 Francesco Picca
+            </div>
+        </div>
+    </footer>
 
-function resetStage() {
-  stage.innerHTML = `<div class="placeholder"><span class="placeholder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polygon points="14.3,9.7 12.9,14.5 9.7,14.3 11.1,9.5"></polygon></svg></span>Premi "Genera un caso" per iniziare.</div>`;
-}
+    <script>
+        // Flip Card Toggle Logic
+        function toggleCard(cardElement) {
+            const flipper = cardElement.querySelector('.card-flipper');
+            flipper.classList.toggle('rotate-y-180');
+        }
 
-document.querySelectorAll('.role-toggle button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.role-toggle button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentRole = btn.dataset.role;
-    populateCategorySelect(currentRole);
-    currentPool = filterCases(currentRole, currentCategory);
-    lastIndex = -1;
-    updateCountNote();
-    renderBrowseList();
-    resetStage();
-  });
-});
+        // Card Context Switcher (A scuola VS Vita Quotidiana)
+        function setCardContext(mode) {
+            const btnScuola = document.getElementById('btn-mode-scuola');
+            const btnVita = document.getElementById('btn-mode-vita');
 
-categorySelect.addEventListener('change', () => {
-  currentCategory = categorySelect.value;
-  currentPool = filterCases(currentRole, currentCategory);
-  lastIndex = -1;
-  updateCountNote();
-  renderBrowseList();
-  resetStage();
-});
+            if (mode === 'scuola') {
+                btnScuola.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-indigo-600 text-white shadow-sm flex items-center space-x-2";
+                btnVita.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900 flex items-center space-x-2";
+                
+                document.querySelectorAll('.card-text-scuola').forEach(el => el.classList.remove('hidden'));
+                document.querySelectorAll('.card-text-vita').forEach(el => el.classList.add('hidden'));
+                
+                document.querySelectorAll('.card-context-badge').forEach(el => el.textContent = 'A SCUOLA');
+                document.querySelectorAll('.card-context-icon').forEach(el => el.className = 'fa-solid card-context-icon fa-school');
+                document.querySelectorAll('.card-back-label').forEach(el => el.textContent = '↻ Tocca per l\'esempio a scuola');
+            } else {
+                btnVita.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-amber-500 text-white shadow-sm flex items-center space-x-2";
+                btnScuola.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900 flex items-center space-x-2";
+                
+                document.querySelectorAll('.card-text-scuola').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.card-text-vita').forEach(el => el.classList.remove('hidden'));
+                
+                document.querySelectorAll('.card-context-badge').forEach(el => el.textContent = 'VITA PRATICA');
+                document.querySelectorAll('.card-context-icon').forEach(el => el.className = 'fa-solid card-context-icon fa-house-laptop');
+                document.querySelectorAll('.card-back-label').forEach(el => el.textContent = '↻ Tocca per l\'esempio di vita pratica');
+            }
+        }
 
-document.getElementById('genBtn').addEventListener('click', generateRandom);
+        // Database of 40 School Scenarios across categories (Docenti, ATA, Dirigenza)
+        const scenarios = [
+            {
+                id: 1,
+                title: "Bozza Circolare per Viaggio d'Istruzione",
+                category: "Dirigenza",
+                role: "Dirigente / Staff / ATA",
+                context: "Occorre preparare una circolare informativa dettagliata per le famiglie relativa a un viaggio d'istruzione di 3 giorni ad Assisi per le classi terze.",
+                delega: "Delega all'IA la stesura della struttura formale del testo, l'elenco dei documenti richiesti e il promemoria sulle scadenze dei pagamenti.",
+                descrizione: "Prompt dettagliato: indica ordine di scuola, destinazione, date, importo indicativo, moduli di autorizzazione da allegare e tono di voce formale ma chiaro.",
+                discernimento: "Verifica che le date, la normativa sulle uscite didattiche e l'importo corrispondano alla delibera del Consiglio d'Istituto.",
+                diligenza: "Firma il documento con nome e ruolo istituzionale; assicurati di non inserire dati personali riservati di alunni nel prompt.",
+                domanda: "In che modo l'uso di modelli standardizzati basati su IA riduce l'errore materiale nelle comunicazioni scuola-famiglia?"
+            },
+            {
+                id: 2,
+                title: "Adattamento di una Lezione di Storia per Alunno con DSA",
+                category: "Docenti",
+                role: "Docente di Sostegno / Disciplinare",
+                context: "Semplificazione di un capitolo sui Comuni Medievali per uno studente con dislessia e disgrafia (L. 170/2010).",
+                delega: "Delega all'IA la sintesi del testo originale in concetti chiave, punti elenco e mappa concettuale testuale.",
+                descrizione: "Specifica il livello di comprensione, imposta frasi brevi, sintassi coordinata, evidenziazione delle parole chiave e formato per font ad alta leggibilità.",
+                discernimento: "Controlla che i concetti storici essenziali non vengano iper-semplificati perdendo il nesso causale degli eventi.",
+                diligenza: "Verifica la rispondenza alle misure compensative e dispensative previste dal PDP personale dell'alunno prima della consegna.",
+                domanda: "Qual è il confine tra semplificazione inclusiva e banalizzazione dei contenuti di studio?"
+            },
+            {
+                id: 3,
+                title: "Griglia di Valutazione Analitica per la Prova Orale",
+                category: "Docenti",
+                role: "Docente della Secondaria",
+                context: "Creazione di una rubrica valutativa a 4 livelli per un'esposizione orale su un argomento scientifico o letterario.",
+                delega: "Delega all'IA la formulazione dei descrittori dettagliati per ciascun livello (Avanzato, Intermedio, Base, Iniziale).",
+                descrizione: "Fornisci gli indicatori (es. chiarezza espositiva, uso del lessico specifico, rielaborazione critica) e la scala di punteggio.",
+                discernimento: "Valuta se i descrittori sono oggettivi e misurabili o se contengono espressioni ambigue o troppo generiche.",
+                diligenza: "Integrazione della griglia nel PTOF / Registro Elettronico con formale condivisione preventiva con gli studenti.",
+                domanda: "Come garantiamo che una rubrica generata da IA rifletta la visione pedagogica del nostro Istituto?"
+            },
+            {
+                id: 4,
+                title: "Risposta a Comunicazione Polemica di un Genitore",
+                category: "Docenti",
+                role: "Coordinatore di Classe",
+                context: "Un genitore invia un'email accesa contestando una valutazione negativa ricevuta dal figlio in un compito in classe.",
+                delega: "Delega all'IA la riformulazione del testo in tono diplomatico, empatico ma fermo sui criteri istituzionali.",
+                descrizione: "Inserisci i punti di fatto (data, criterio di valutazione, disponibilità a un colloquio) chiedendo una bozza istituzionale e pacata.",
+                discernimento: "Assicurati che il tono non risulti freddo o burocratico, e che riconosca l'alleanza educativa senza ritrattare il voto.",
+                diligenza: "Rimuovi qualsiasi riferimento a nomi reali nel prompt. La risposta finale è firmata direttamente dal docente responsabile.",
+                domanda: "Perché l'IA è particolarmente utile per disinnescare cariche emotive nelle comunicazioni critiche?"
+            },
+            {
+                id: 5,
+                title: "Verbalizzazione di un Consiglio di Classe Faticoso",
+                category: "Docenti",
+                role: "Segretario del Consiglio di Classe",
+                context: "Riorganizzare appunti sparsi e disordinati presi durante una riunione di 2 ore su casi disciplinari e strategie didattiche.",
+                delega: "Delega all'IA la strutturazione degli appunti grezzi nel formato standard del verbale (O.d.G., discussione, delibere).",
+                descrizione: "Fornisci gli appunti in ordine cronologico specificando il modello formale richiesto dalla scuola.",
+                discernimento: "Verifica la fedeltà del resoconto, assicurandoti che l'IA non inventi interventi o votazioni non avvenute (allucinazione).",
+                diligenza: "Garantisci la riservatezza sui nomi degli studenti citati e rileggi con estrema cura prima di sottoporre alla firma del Presidente.",
+                domanda: "Come evitare che la velocizzazione della verbalizzazione comprometta la precisione legale dell'atto?"
+            },
+            {
+                id: 6,
+                title: "Progettazione di un'Unità Didattica CLIL in Inglese",
+                category: "Docenti",
+                role: "Docente DNL / Inglese",
+                context: "Pianificazione di 4 ore di Scienze in lingua inglese per la scuola secondaria di secondo grado.",
+                delega: "Delega all'IA la ricerca e strutturazione del vocabolario specifico, le attività 'warm-up' e i testi di comprensione.",
+                descrizione: "Indica il livello linguistico target (es. B1/B2), l'argomento scientifico esatto e il metodo di scaffolding desiderato.",
+                discernimento: "Verifica che il registro linguistico e la correttezza scientifica siano idonei e privi di espressioni colloquiali inadeguate.",
+                diligenza: "Attribuzione delle fonti per testi e immagini di supporto utilizzate nella scheda didattica finale.",
+                domanda: "In che modo l'IA migliora l'integrazione tra competenze disciplinari e linguistiche nel CLIL?"
+            },
+            {
+                id: 7,
+                title: "Traduzione Avviso per Famiglie Straniere (NAI)",
+                category: "ATA",
+                role: "Segreteria Didattica / Collaboratori",
+                context: "Tradurre un avviso urgente sulla mensa e sulle iscrizioni per famiglie neo-arrivate che parlano arabo, cinese o ucraino.",
+                delega: "Delega all'IA la traduzione multilingue del messaggio istituzionale mantenendo la semplicità sintattica.",
+                descrizione: "Invia il testo in italiano chiedendo una traduzione semplice, priva di burocraticismi e con frasi d'impatto diretto.",
+                discernimento: "Verifica, laddove possibile con mediatori o software di controllo secondari, che le informazioni chiave (date, numeri) siano esatte.",
+                diligenza: "Aggiungi una nota che specifica l'uso di traduzione assistita e fornisci un contatto della segreteria per chiarimenti.",
+                domanda: "In che modo l'IA favorisce l'inclusione delle famiglie con background migratorio senza gravare sugli uffici?"
+            },
+            {
+                id: 8,
+                title: "Gestione Inventario e Capitolato Tecnico Materiali",
+                category: "ATA",
+                role: "DSGA / Assistente Amministrativo",
+                context: "Predispositione della scheda descrittiva per la gara d'acquisto di nuovi monitor interattivi (TOUCH) per le aule.",
+                delega: "Delega all'IA la stesura della tabella comparativa delle specifiche tecniche standard di mercato.",
+                descrizione: "Fornisci il budget massimo, la dimensione delle aule e i requisiti minimi di connettività e garanzia.",
+                discernimento: "Verifica che le specifiche richieste siano conformi al Codice degli Appalti e non orientate a un singolo marchio commerciale.",
+                diligenza: "Il DSGA e il Dirigente mantengono la responsabilità esclusiva dell'approvazione finale del bando di gara.",
+                domanda: "Come assicurare la neutralità e la trasparenza amministrativa nell'uso dell'IA per gli acquisti pubblici?"
+            },
+            {
+                id: 9,
+                title: "Elaborazione Progetto Formativo PNRR / Piano Estate",
+                category: "Dirigenza",
+                role: "Dirigente Scolastico / Team Innovazione",
+                context: "Redazione della proposta progettuale per moduli formativi pomeridiani sulla robotica e le STEM.",
+                delega: "Delega all'IA la prima stesura del quadro concettuale, degli obiettivi formativi generali e della scansione temporale.",
+                descrizione: "Fornisci le linee guida del ministero, i destinatari (es. 30 alunni di scuola primaria) e le metodologie didattiche attive.",
+                discernimento: "Verifica la coerenza tra obiettivi descritti e requisiti specifici della piattaforma ministeriale.",
+                diligenza: "Verifica formale da parte del Dirigente Scolastico e del Collegio Docenti prima dell'inoltro sulla piattaforma governativa.",
+                domanda: "L'IA può aiutare la scuola a cogliere le opportunità dei bandi senza snaturare la propria identità pedagogica?"
+            },
+            {
+                id: 10,
+                title: "Creazione Test di Verifica a Risposta Multipla con Distrattori",
+                category: "Docenti",
+                role: "Docente di Geografia / Scienze",
+                context: "Preparazione di un test d'ingresso rapido di 15 domande per rilevare le conoscenze pregresse della classe.",
+                delega: "Delega all'IA la produzione di domande con 4 opzioni di risposta, garantendo che i distrattori siano verosimili.",
+                descrizione: "Inserisci l'argomento esatto (es. Climi e Biomi), la difficoltà target e richiedi la griglia delle risposte corrette a parte.",
+                discernimento: "Leggi attentamente ogni quesito: accertati che non ci siano ambiguità nelle opzioni o risposte doppiamente corrette.",
+                diligenza: "Mantieni l'archivio delle verifiche nella cartella personale e condividi con la classe i criteri di correzione.",
+                domanda: "Qual è la differenza tra delegare la generazione di quiz e delegare la valutazione dello studente?"
+            },
+            {
+                id: 11,
+                title: "Scheda di Lavoro per Alunno ad Alto Potenziale (Plusdotazione)",
+                category: "Docenti",
+                role: "Docente di Matematica",
+                context: "Creare sfide matematiche d'approfondimento per uno studente che termina gli esercizi in classe in pochissimi minuti.",
+                delega: "Delega all'IA la creazione di problemi di logica e applicazione pratica collegati al programma svolto.",
+                descrizione: "Indica l'argomento (es. equazioni di primo grado) chiedendo problemi contestualizzati in scenari di vita reale o giochi.",
+                discernimento: "Verifica che il livello di sfida sia adeguato, stimolante ma non frustrante o privo di senso logico.",
+                diligenza: "Monitora le reazioni dello studente durante l'esecuzione per personalizzare ulteriormente il supporto.",
+                domanda: "In che modo l'IA ci aiuta a valorizzare le eccellenze oltre a sostenere le fragilità?"
+            },
+            {
+                id: 12,
+                title: "Bozza di Integrazione al Piano di Emergenza e Sicurezza",
+                category: "ATA",
+                role: "RSPP / DSGA / Collaboratore del Dirigente",
+                context: "Aggiornamento delle procedure di evacuazione in presenza di cantieri PNRR all'interno dell'edificio scolastico.",
+                delega: "Delega all'IA la strutturazione del testo normativo e la formulazione dei comportamenti corretti in punti elenco intelligenti.",
+                descrizione: "Inserisci i dati della mappa di cantiere, le vie di fuga bloccate e i percorsi alternativi definiti dal tecnico.",
+                discernimento: "Effettua un sopralluogo reale e confronta il testo generato con la planimetria dell'istituto: l'IA non conosce l'edificio!",
+                diligenza: "Approvazione del RSPP abilitato e sottoscrizione formale da parte del Dirigente Scolastico prima dell'affissione.",
+                domanda: "Perché il discernimento fisico e territoriale è insostituibile nella gestione della sicurezza scolastica?"
+            },
+            {
+                id: 13,
+                title: "Analisi aggregata dei Dati delle Prove INVALSI",
+                category: "Dirigenza",
+                role: "NIV (Nucleo Interno di Valutazione) / DS",
+                context: "Interpretazione delle tabelle INVALSI per individuare i punti di forza e di debolezza in Italiano e Matematica.",
+                delega: "Delega all'IA la sintesi dei dati numerici anonimizzati in un report narrativo evidenziando trend e scostamenti.",
+                descrizione: "Incolla le tabelle aggregate di dati (es. WLE medio, ESCS, varianza tra classi) senza dati personali e chiedi un quadro interpretativo.",
+                discernimento: "Verifica che l'interpretazione rispetti la reale situazione socioculturale del plesso e non tragga conclusioni affrettate.",
+                diligenza: "I dati aggregati vanno usati per la redazione del RAV e del Piano di Miglioramento con la supervisione del NIV.",
+                domanda: "Come trasformare freddi dati statistici generati dall'IA in scelte didattiche concrete per i docenti?"
+            },
+            {
+                id: 14,
+                title: "Feedback Formativo per Elaborati di Scrittura Creativa",
+                category: "Docenti",
+                role: "Docente di Italiano",
+                context: "Fornire a ciascuno dei 25 studenti suggerimenti personalizzati di miglioramento su un tema di italiano.",
+                delega: "Delega all'IA la prima bozza di commenti costruttivi focalizzati su struttura, ricchezza lessicale e coerenza narrativa.",
+                descrizione: "Inserisci il testo scritto dallo studente (anonimizzato) e la consegna originale, chiedendo 2 punti di forza e 1 consiglio pratico.",
+                discernimento: "Personalizza il suggerimento dell'IA in base alla sensibilità psicologica e alla storia di apprendimento del singolo ragazzo.",
+                diligenza: "Non inserire mai nome e cognome dello studente nei tool di IA; il voto e il giudizio finale spettano unicamente al docente.",
+                domanda: "Come preservare l'empatia e la relazione umana quando ci si avvale di IA per il feedback formativo?"
+            },
+            {
+                id: 15,
+                title: "Redazione Bando di Selezione Esperti Esterni",
+                category: "ATA",
+                role: "Assistente Amministrativo / DSGA",
+                context: "Preparazione dell'avviso pubblico per il reclutamento di un madrelingua inglese per corsi pomeridiani.",
+                delega: "Delega all'IA la stesura degli articoli standard del bando (requisiti, modalità di candidatura, tabella valutazione titoli).",
+                descrizione: "Fornisci i criteri decisi dal Collegio Docenti (laurea, certificazioni, anni di servizio) e il compenso orario lordo.",
+                discernimento: "Controlla la perfetta conformità con il CCNL Scuola e le ultime note operativi del Ministero.",
+                diligenza: "Controllo finale dell'ufficio contabile e pubblicazione formale all'Albo Pretorio on-line dell'Istituto.",
+                domanda: "In che misura l'automazione dei documenti amministrativi libera tempo per l'assistenza agli utenti?"
+            },
+            {
+                id: 16,
+                title: "Progettazione di un Percorso di PCTO per Liceo/Tecnico",
+                category: "Docenti",
+                role: "Tutor PCTO",
+                context: "Stesura della convenzione e del progetto formativo individuale per uno stage presso un'azienda locale.",
+                delega: "Delega all'IA l'articolazione delle competenze trasversali (soft skills) e degli obiettivi disciplinari dell'esperienza.",
+                descrizione: "Fornisci il profilo dell'azienda, l'indirizzo di studi della scuola e le mansioni che lo studente svolgerà.",
+                discernimento: "Verifica che le mansioni siano coerenti con la tutela della salute e sicurezza e con il piano di studi dello studente.",
+                diligenza: "Firma del patto formativo da parte di scuola, azienda, studente e famiglia.",
+                domanda: "Come garantire che il percorso PCTO generato mantenga un alto valore formativo e non solo burocratico?"
+            },
+            {
+                id: 17,
+                title: "FAQ per le Giornate di Scuola Aperta (Open Day)",
+                category: "Dirigenza",
+                role: "Funzione Strumentale Orientamento",
+                context: "Preparare un depliant e una sezione web per rispondere alle domande più frequenti delle famiglie dei futuri primini.",
+                delega: "Delega all'IA l'organizzazione delle FAQ storiche della scuola in categorie chiare (Orari, Indirizzi, Progetti, Mensa).",
+                descrizione: "Inserisci l'elenco dei punti informativi dell'offerta formativa e richiedi risposte brevi, rassicuranti e ben impaginate.",
+                discernimento: "Verifica che le indicazioni sugli orari e sull'offerta formativa corrispondano esattamente al PTOF approvato.",
+                diligenza: "Pubblicazione sul sito dell'istituto previa verifica del Responsabile della Comunicazione.",
+                domanda: "In che modo l'IA aiuta a rendere più accessibile e trasparente l'offerta formativa agli utenti esterni?"
+            },
+            {
+                id: 18,
+                title: "Attività Didattica per Studenti NAI (Nuovi Arrivati in Italia)",
+                category: "Docenti",
+                role: "Docente di Italiano L2 / Sostegno",
+                context: "Progettare una scheda di accoglienza con vocabolario figurato e prime frasi d'uso per un alunno appena arrivato senza conoscenza dell'italiano.",
+                delega: "Delega all'IA la selezione del lessico di sopravvivenza scolastica (aula, compagni, bagno, professore) con traduzione a fronte.",
+                descrizione: "Indica la lingua madre dello studente, l'età e la necessità di frasi chiare accoppiate a suggerimenti per immagini.",
+                discernimento: "Controlla che i termini scelti siano effettivamente quelli usati nel contesto scolastico quotidiano italiano.",
+                diligenza: "Integrazione delle schede nel Piano Didattico Personalizzato per la fase di prima accoglienza.",
+                domanda: "In che modo l'IA abbatte i tempi di risposta nei primi giorni decisivi di inserimento di un alunno NAI?"
+            },
+            {
+                id: 19,
+                title: "Sintesi di una Nota Ministeriale Complessa",
+                category: "Dirigenza",
+                role: "Dirigente Scolastico / DSGA",
+                context: "Comprendere rapidamente i punti operativi salienti di una circolare del MIM di 25 pagine sulla gestione del contenzioso o del personale.",
+                delega: "Delega all'IA la lettura e l'estrazione dei punti chiave, delle scadenze e degli adempimenti urgenti.",
+                descrizione: "Incolla il testo completo della nota ministeriale e chiedi un'analisi per punti con la ripartizione dei compiti (DS, DSGA, Docenti).",
+                discernimento: "Verifica incrociata dei passi più critici direttamente sul testo ufficiale: l'IA potrebbe travisare sfumature giuridiche.",
+                diligenza: "L'emanazione di direttive interne richiede la responsabilità e la firma personale del Dirigente.",
+                domanda: "Quali sono i rischi di affidarsi ciecamente alle sintesi di testi normativi prodotte dall'IA?"
+            },
+            {
+                id: 20,
+                title: "Simulazione di Dibattito (Debate) su Educazione Civica",
+                category: "Docenti",
+                role: "Docente di Educazione Civica",
+                context: "Organizzare una lezione sul tema 'Intelligenza Artificiale e Lavoro: opportunità o minaccia?' con la metodologia del Debate.",
+                delega: "Delega all'IA la generazione di argomentazioni a favore (PRO) e contro (CONTRO) per guidare i gruppi di ricerca.",
+                descrizione: "Richiedi 5 tesi ben strutturate per ciascuna fazione, corredate da dati teorici e spunti di riflessione critici.",
+                discernimento: "Valuta la neutralità delle tesi ed elimina eventuali bias culturali o posizioni estreme generate dal modello.",
+                diligenza: "Spiega agli studenti che l'IA è usata come palestra di idee, ma la formulazione dei discorsi deve essere originale.",
+                domanda: "In che modo l'uso guidato dell'IA sviluppa il pensiero critico negli studenti anziché sostituirlo?"
+            },
+            {
+                id: 21,
+                title: "Relazione Finale del Coordinatore di Classe",
+                category: "Docenti",
+                role: "Coordinatore di Classe",
+                context: "Redazione del documento conclusivo sulla progressione didattico-disciplinare della classe al termine dell'anno scolastico.",
+                delega: "Delega all'IA la redazione dei paragrafi descrittivi sul clima della classe, sulla partecipazione alle uscite e sulle metodologie adottate.",
+                descrizione: "Fornisci un elenco puntato anonimo con le tappe principali dell'anno, i punti di forza e le criticità riscontrate.",
+                discernimento: "Accertati che la descrizione rifletta esattamente le dinamiche vissute dalla classe e concordate con gli altri colleghi.",
+                diligenza: "Rimuovi ogni dato personale sensibile nei prompt e presenta la relazione finale al Consiglio di Classe per l'approvazione.",
+                domanda: "Come preservare il valore di sintesi pedagogica della relazione finale evitando il 'copia-incolla' burocratico?"
+            },
+            {
+                id: 22,
+                title: "Piano Didattico Personalizzato (PDP) - Sezione Strategie",
+                category: "Docenti",
+                role: "Docenti del Consiglio di Classe",
+                context: "Selezione delle misure dispensative e degli strumenti compensativi più adatti per uno studente con discalculia.",
+                delega: "Delega all'IA la prima selezione di strumenti operativi idonei (es. calcolatrice scientifica, formulari, mappe numeriche).",
+                descrizione: "Fornisci il profilo neuropsicologico sintetico (senza dati anagrafici) e le materie in cui si riscontrano le maggiori difficoltà.",
+                discernimento: "Confronta i suggerimenti dell'IA con la diagnosi depositata e con le reali attitudini osservate in classe.",
+                diligenza: "Condivisione, approvazione e firma formale del PDP da parte di tutti i docenti del consiglio e della famiglia.",
+                domanda: "Come evitare che la compilazione assistita del PDP si trasformi in una mera prassi formale?"
+            },
+            {
+                id: 23,
+                title: "Pianificazione dell'Orario Scolastico Provvisorio",
+                category: "Dirigenza",
+                role: "Commissione Orario / Staff DS",
+                context: "Incrociare i vincoli dei docenti su più plessi, le ore di sostegno e l'uso dei laboratori per la prima settimana di scuola.",
+                delega: "Delega all'IA il controllo della coerenza logica e l'individuazione di eventuali sovrapposizioni o 'buchi' nella bozza di orario.",
+                descrizione: "Fornisci la griglia delle disponibilità dei docenti e dei laboratori e chiedi di evidenziare i conflitti di orario.",
+                discernimento: "Verifica la fattibilità reale degli spostamenti dei docenti tra plessi diversi (i tempi tecnici di percorrenza).",
+                diligenza: "Pubblicazione dell'orario approvato dal Dirigente Scolastico secondo le prerogative contrattuali.",
+                domanda: "In quali compiti di ottimizzazione logistica l'IA supera l'efficienza del calcolo umano?"
+            },
+            {
+                id: 24,
+                title: "Ideazione Laboratorio STEAM Transdisciplinare",
+                category: "Docenti",
+                role: "Docenti di Arte e Matematica",
+                context: "Creazione di un progetto didattico di 10 ore che unisca la Geometria e la Storia dell'Arte (es. La Sezione Aurea).",
+                delega: "Delega all'IA l'ideazione delle fasi operative del laboratorio, dei materiali occorrenti e dei prodotti finali attesi.",
+                descrizione: "Fornisci la classe target (es. II secondaria I grado), le ore disponibili e la richiesta di compiti di realtà pratici.",
+                discernimento: "Verifica che il progetto contenga un reale equilibrio tra la componente artistica e quella scientifico-matematica.",
+                diligenza: "Inserimento dell'attività nella programmazione didattica di dipartimento con indicazione delle fonti e dei crediti.",
+                domanda: "Come l'IA può facilitare la cooperazione tra docenti di materie tradizionalmente separate?"
+            },
+            {
+                id: 25,
+                title: "Predisposizione del Modulo Consenso Informato per Eventi",
+                category: "ATA",
+                role: "Assistente Amministrativo",
+                context: "Creazione di un modulo per l'autorizzazione dei genitori alla partecipazione dei figli a un torneo sportivo d'istituto.",
+                delega: "Delega all'IA la stesura del testo legale del consenso, delle liberatorie privacy (GDPR) e delle informazioni logistiche.",
+                descrizione: "Fornisci data, luogo, mezzo di trasporto, costo (se presente) e clausole standard sul trattamento delle immagini.",
+                discernimento: "Accertati che le clausole sul trattamento dei dati personali siano conformi all'Informativa Privacy d'Istituto.",
+                diligenza: "Istruttoria formale dell'ufficio di segreteria e validazione da parte del DPO (Data Protection Officer) se necessario.",
+                domanda: "Perché la tutela della privacy degli alunni è il pilastro non negoziabile della Diligenza scolastica?"
+            },
+            {
+                id: 26,
+                title: "Semplificazione del Regolamento d'Istituto per Studenti",
+                category: "Dirigenza",
+                role: "Staff Dirigenziale / Rappresentanti Studenti",
+                context: "Rendere il Regolamento di Disciplina accessibile e di facile lettura per i ragazzi della scuola primaria o secondaria.",
+                delega: "Delega all'IA la riscrittura degli articoli chiave in forma di decalogo illustrato o linguaggio 'Easy-to-Read'.",
+                descrizione: "Incolla gli articoli ufficiali sui diritti e doveri e chiedi una versione in linguaggio chiaro e positivo con esempi.",
+                discernimento: "Assicurati che la semplificazione del linguaggio non alteri il valore vincolante ed etico delle norme scolastiche.",
+                diligenza: "Approvazione della versione divulgativa in Consiglio di Istituto e pubblicazione sul sito web scolastico.",
+                domanda: "Come la chiarezza espositiva generata da IA può favorire il patto di corresponsabilità educativa?"
+            },
+            {
+                id: 27,
+                title: "Creazione di Flashcard e Quiz per il Ripasso Autonomo",
+                category: "Docenti",
+                role: "Docente di Scienze / Storia",
+                context: "Fornire agli studenti uno strumento per lo studio individuale in vista della verifica conclusiva di capitolo.",
+                delega: "Delega all'IA la trasformazione di un testo di studio in coppie Domanda/Risposta per piattaforme come Anki o Quizlet.",
+                descrizione: "Inserisci la sintesi del capitolo e richiedi 20 flashcard focalizzate sui concetti chiave, date e definizioni principali.",
+                discernimento: "Revisiona le risposte per evitare che vi siano imprecisioni concettuali o formulazioni fuorvianti.",
+                diligenza: "Condividi le flashcard sul canale ufficiale della classe (es. Classroom/Teams) specificando che sono un supporto integrativo.",
+                domanda: "In che modo l'IA può sostenere l'autonomia nello studio a casa senza sostituirsi allo sforzo rielaborativo?"
+            },
+            {
+                id: 28,
+                title: "Pianificazione della Formazione Docenti di Istituto",
+                category: "Dirigenza",
+                role: "Funzione Strumentale Formazione / DS",
+                context: "Progettare un corso interno di 15 ore sulle Nuove Tecnologie e la Metodologia della Classe Capovolta (Flipped Classroom).",
+                delega: "Delega all'IA l'articolazione del calendario dei moduli, dei contenuti teorico-pratici e dei compiti di realtà per i corsisti.",
+                descrizione: "Specifica il livello di partenza dei docenti, il numero di incontri in presenza ed online e gli obiettivi finali.",
+                discernimento: "Verifica che il carico di lavoro richiesto ai colleghi sia realistico e compatibile con gli impegni del calendario scolastico.",
+                diligenza: "Inserimento del piano formativo nella piattaforma SOFIA del MIM per il riconoscimento dei crediti formativi.",
+                domanda: "Come progettare percorsi di formazione sull'IA usufruendo dell'IA stessa in modo coerente?"
+            },
+            {
+                id: 29,
+                title: "Bozza per la Rendicontazione Sociale e Bilancio Sociale",
+                category: "Dirigenza",
+                role: "Dirigente Scolastico / DSGA",
+                context: "Comunicare alla comunità cittadina e alle famiglie i risultati raggiunti dalla scuola nell'ultimo triennio.",
+                delega: "Delega all'IA la stesura della narrativa di accompagnamento ai grafici di rendicontazione (es. successi formativi, inclusione).",
+                descrizione: "Fornisci l'elenco dei progetti realizzati, le percentuali di successo e i dati sul miglioramento delle strutture.",
+                discernimento: "Accertati che il testo mantenga un tono trasparente, oggettivo e non trionfalistico o autoreferenziale.",
+                diligenza: "Presentazione e condivisione pubblica del documento approvato dagli organi collegiali della scuola.",
+                domanda: "In che misura la trasparenza e la leggibilità della rendicontazione sociale aumentano la fiducia delle famiglie?"
+            },
+            {
+                id: 30,
+                title: "Supporto per la Creazione di Podcast Scolastici",
+                category: "Docenti",
+                role: "Docente di Lettere / Laboratorio Giornalismo",
+                context: "Guidare una classe nella produzione di un episodio podcast sul tema del bullismo e cyberbullismo.",
+                delega: "Delega all'IA la prima stesura dello script/scaletta audio con la divisione in tempi, voci narranti e intermezzi musicali.",
+                descrizione: "Fornisci le ricerche svolte dai ragazzi e richiedi uno script per un podcast di 5 minuti, brillante ed efficace per i giovani.",
+                discernimento: "Verifica con la classe che il linguaggio rispecchi il loro modo autentico di esprimersi e non risulti artificiale.",
+                diligenza: "Verifica delle liberatorie per l'uso della voce e per i diritti d'autore delle colonne sonore utilizzate.",
+                domanda: "In che modo l'IA affianca la creatività studentesca anziché imbrigliarla in schemi rigidi?"
+            },
+            {
+                id: 31,
+                title: "Gestione Richiesta Accesso agli Atti Amministrativi",
+                category: "ATA",
+                role: "DSGA / Assistente Amministrativo",
+                context: "Stesura della risposta formale a una richiesta di accesso agli atti inerente una procedura d'esame o un bando.",
+                delega: "Delega all'IA la ricerca dei riferimenti normativi (L. 241/90 e D.Lgs. 33/2013) e la struttura della lettera di risposta.",
+                descrizione: "Inserisci l'oggetto della richiesta, l'esito dell'istruttoria ed i motivi dell'eventuale accoglimento o diniego parziale.",
+                discernimento: "Verifica scrupolosa del rispetto dei termini di legge e della presenza di eventuali controinteressati da tutelare.",
+                diligenza: "Sottoscrizione del provvedimento da parte del Dirigente Scolastico e notifica formale al richiedente tramite PEC.",
+                domanda: "Perché la consulenza normativa dell'IA deve sempre essere sottoposta al vaglio dell'esperto amministrativo?"
+            },
+            {
+                id: 32,
+                title: "Scheda di Autovalutazione per gli Studenti",
+                category: "Docenti",
+                role: "Docente di Fisica",
+                context: "Aiutare gli studenti a riflettere sul proprio processo di apprendimento al termine di un modulo di laboratorio.",
+                delega: "Delega all'IA la generazione di domande di meta-cognizione (es. 'Cosa ho trovato più difficile?', 'Come ho superato l'ostacolo?').",
+                descrizione: "Descrivi il laboratorio svolto e richiedi un questionario di autovalutazione anonimo a risposta graduata (scala Likert) e aperta.",
+                discernimento: "Assicurati che le domande stimolino una riflessione autentica e non risposte scontate o formali.",
+                diligenza: "Usa i risultati in modo aggregato per calibrare le prossime lezioni senza assegnare voti fiscali al questionario.",
+                domanda: "In che modo la riflessione metacognitiva supportata da IA migliora la consapevolezza dello studente?"
+            },
+            {
+                id: 33,
+                title: "Pianificazione dell'Accoglienza per la Prima Settimana",
+                category: "Docenti",
+                role: "Team Accoglienza / Docenti Primaria e Secondaria",
+                context: "Ideare attività ludico-didattiche per favorire la conoscenza reciproca nelle classi prime nei primi tre giorni di scuola.",
+                delega: "Delega all'IA la proposta di giochi di ruolo, 'ice-breaker' ed esercizi di cooperazione adatti all'età dei ragazzi.",
+                descrizione: "Indica l'età degli alunni, il tempo a disposizione e gli spazi disponibili (aula, palestra, cortile).",
+                discernimento: "Seleziona solo le attività realmente inclusive, che non mettano a disagio studenti timidi o con bisogni speciali.",
+                diligenza: "Condivisione del programma di accoglienza con il team docente di classe prima di iniziare le attività.",
+                domanda: "Come scegliere attività che favoriscano la coesione del gruppo classe senza forzature?"
+            },
+            {
+                id: 34,
+                title: "Bozza Comunicato Stampa per Evento Culturale Scolastico",
+                category: "Dirigenza",
+                role: "Referente Comunicazione / DS",
+                context: "Inviare ai giornali locali la notizia della partecipazione della scuola a una mostra d'arte o a una competizione di robotica.",
+                delega: "Delega all'IA la stesura del comunicato stampa seguendo la regola giornalistica delle 5 W (Who, What, When, Where, Why).",
+                descrizione: "Fornisci le informazioni di sintesi dell'evento, le dichiarazioni chiave del Dirigente e i dettagli di luogo e data.",
+                discernimento: "Verifica che il tono sia accattivante e che i dati cronostorici della scuola siano esatti.",
+                diligenza: "Invio agli organi di stampa previa autorizzazione del Dirigente Scolastico e liberatoria per eventuali foto di minori.",
+                domanda: "In che modo una comunicazione esterna curata rafforza la reputazione dell'istituzione scolastica sul territorio?"
+            },
+            {
+                id: 35,
+                title: "Questionario di Satisfaction per Famiglie e Studenti",
+                category: "Dirigenza",
+                role: "NIV / Referente Qualità",
+                context: "Somministrare un sondaggio annuale online per rilevare il clima scolastico, la qualità della mensa e delle strutture.",
+                delega: "Delega all'IA la formulazione di domande chiare, prive di ambiguità e divise per aree tematiche.",
+                descrizione: "Indica i target (genitori, alunni, docenti) e gli argomenti principali da indagare nel rispetto dell'anonimato.",
+                discernimento: "Verifica che le domande non siano orientate in modo da influenzare le risposte degli utenti (bias di rilevazione).",
+                diligenza: "Garantisci l'assoluto anonimato nella piattaforma di raccolta dati (es. Moduli Google o MS Forms) in rispetto al GDPR.",
+                domanda: "Come l'analisi imparziale dei questionari può diventare volano di effettivo miglioramento organizzativo?"
+            },
+            {
+                id: 36,
+                title: "Progettazione di una Lezione Invertita (Flipped Classroom)",
+                category: "Docenti",
+                role: "Docente di Filosofia",
+                context: "Organizzare uno studio autonomo a casa su un autore e dedicare il tempo in classe ad attività pratiche di discussione.",
+                delega: "Delega all'IA la ricerca di spunti per video brevi, letture guidate a casa e la scaletta dell'attività laboratoriale in aula.",
+                descrizione: "Fornisci l'autore (es. Kant e l'Illuminismo) e richiedi 3 domande chiave per la visione a casa e 2 compiti a gruppi per l'aula.",
+                discernimento: "Controlla la pertinenza e la correttezza filologica delle sintesi e delle fonti proposte dall'IA.",
+                diligenza: "Carica i materiali sulla piattaforma didattica d'istituto citando correttamente gli autori dei testi di supporto.",
+                domanda: "In che modo la Flipped Classroom supportata da IA sposta il focus del docente dall'erogazione alla mediazione?"
+            },
+            {
+                id: 37,
+                title: "Organizzazione Turni di Vigilanza della Ricreazione",
+                category: "Dirigenza",
+                role: "Collaboratore del Dirigente / Staff",
+                context: "Assegnare ai docenti la vigilanza negli corridoi, cortili e bagni durante la pausa ricreativa garantendo equità di carico.",
+                delega: "Delega all'IA l'incrocio delle ore di servizio dei docenti nelle varie giornate con i punti strategici da sorvegliare.",
+                descrizione: "Fornisci il quadro delle ore dei docenti, il numero di zone di vigilanza e le regole d'istituto sui turni.",
+                discernimento: "Verifica che non vi siano scoperte zone ad alto rischio e che le norme contrattuali sui tempi di riposo siano rispettate.",
+                diligenza: "Validazione e firma della disposizione di servizio da parte del Dirigente Scolastico con pubblicazione in bacheca.",
+                domanda: "Come l'ottimizzazione dei compiti di vigilanza garantisce un ambiente scolastico più sicuro per tutti?"
+            },
+            {
+                id: 38,
+                title: "Schede per l'Apprendimento Cooperativo (Jigsaw)",
+                category: "Docenti",
+                role: "Docente di Geofisica / Geografia",
+                context: "Suddividere uno studio sui cambiamenti climatici in 4 sotto-temi affidati a gruppi di studenti 'esperti'.",
+                delega: "Delega all'IA la ripartizione equa del testo complesso in 4 sotto-dossier di pari lunghezza e difficoltà.",
+                descrizione: "Inserisci il documento di partenza chiedendo 4 schede tematiche indipendenti corredate da domande di verifica guida.",
+                discernimento: "Assicurati che ciascuno dei 4 sotto-temi contenga elementi sufficienti per permettere poi lo scambio formativo tra pari.",
+                diligenza: "Revisione finale delle schede per accertare che non vi siano sovrapposizioni o vuoti concettuali.",
+                domanda: "In che modo l'IA sostiene la preparazione di metodologie didattiche cooperative complesse?"
+            },
+            {
+                id: 39,
+                title: "Supporto alla Compilazione del PTOF Triennale",
+                category: "Dirigenza",
+                role: "Funzione Strumentale PTOF / DS",
+                context: "Aggiornare la sezione dedicata al Piano Digitale e all'Orientamento del Piano Triennale dell'Offerta Formativa.",
+                delega: "Delega all'IA la sintetizzazione delle nuove priorità di istituto nel linguaggio formale dei documenti strategici MIM.",
+                descrizione: "Inserisci le delibere del Collegio Docenti e del Consiglio d'Istituto chiedendo una stesura coerente con la struttura del PTOF.",
+                discernimento: "Sottoponi il documento a una verifica rigorosa per evitare incongruenze con le risorse finanziarie ed umane reali.",
+                diligenza: "Pubblicazione ufficiale del PTOF su 'Scuola in Chiaro' previa formale adozione del Consiglio di Istituto.",
+                domanda: "Come mantenere il PTOF un documento vivo e reale e non un mero adempimento formale?"
+            },
+            {
+                id: 40,
+                title: "Pianificazione dell'Esame di Stato (Colloquio Orale)",
+                category: "Docenti",
+                role: "Commissione d'Esame di Stato",
+                context: "Ideare nodi concettuali e spunti interdisciplinari a partire da un documento, un'immagine o un testo per il colloquio.",
+                delega: "Delega all'IA la generazione di collegamenti tematici tra diverse discipline (es. Italiano, Storia, Fisica, Arte) a partire da una parola chiave.",
+                descrizione: "Fornisci la parola chiave (es. 'Il Limite' o 'La Velocità') e chiedi 3 collegamenti coerenti con i programmi svolti e attestati nel Documento del 15 Maggio.",
+                discernimento: "Verifica che i collegamenti proposti non siano forzati, ma abbiano una reale ed effettiva dignità epistemologica.",
+                diligenza: "I collegamenti e i materiali scelti per la busta o per l'avvio del colloquio restano secretati ed approvati dalla sola Commissione.",
+                domanda: "In che modo l'IA può spalancare connessioni interdisciplinari inaspettate durante la preparazione degli esami?"
+            }
+        ];
 
-function renderBrowseList() {
-  browseList.innerHTML = currentPool.map((c, i) => {
-    const roleLabel = c.role === "docente" ? "Docenti" : "ATA";
-    return `<div class="browse-item" data-idx="${i}">
-      <span class="bi-title">${c.emotion.emoji} ${c.title}</span>
-      <span class="bi-role">${roleLabel} · ${CATEGORY_LABELS[c.category]}</span>
-    </div>`;
-  }).join("");
+        let currentFilter = 'Tutti';
+        let currentScenarioIndex = 0;
 
-  browseList.querySelectorAll('.browse-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const i = parseInt(item.dataset.idx, 10);
-      lastIndex = i;
-      renderCase(currentPool[i]);
-      try {
-        stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } catch (e) {
-        /* scrollIntoView with options unsupported: skip gracefully */
-      }
-    });
-  });
-}
+        // Populate dropdown menu with ONLY filtered scenarios
+        function populateDropdown() {
+            const dropdown = document.getElementById('scenario-dropdown');
+            const filtered = getFilteredScenarios();
+            
+            dropdown.innerHTML = `<option value="">-- Seleziona un caso (${currentFilter}: ${filtered.length}) --</option>`;
+            
+            filtered.forEach((sc) => {
+                const opt = document.createElement('option');
+                opt.value = sc.id;
+                opt.textContent = `#${sc.id} - ${sc.title}`;
+                dropdown.appendChild(opt);
+            });
+        }
 
-browseToggle.addEventListener('click', () => {
-  const isOpen = browseList.classList.toggle('open');
-  browseToggle.classList.toggle('open', isOpen);
-  document.getElementById('browseEmoji').textContent = isOpen ? "📖" : "📚";
-  document.getElementById('browseLabel').textContent = isOpen ? "Nascondi l'elenco dei casi" : "Oppure sfoglia tutti i casi disponibili";
-});
+        // Set Filter
+        function setFilter(category) {
+            currentFilter = category;
+            
+            // Update filter button styles
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-filter') === category) {
+                    btn.className = "filter-btn active bg-indigo-600 text-white text-xs sm:text-sm font-medium px-3.5 py-2 rounded-xl transition-all";
+                } else {
+                    btn.className = "filter-btn bg-slate-700 text-slate-300 hover:bg-slate-600 text-xs sm:text-sm font-medium px-3.5 py-2 rounded-xl transition-all";
+                }
+            });
 
-populateCategorySelect(currentRole);
-updateCountNote();
-renderBrowseList();
+            // Clear search input on category change
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) searchInput.value = '';
 
-// Event delegation for the 40 case-study flashcards (re-rendered dynamically)
-stage.addEventListener('click', (e) => {
-  const hintBtn = e.target.closest('.case-flip-hint-btn');
-  if (!hintBtn) return;
-  const flipCard = hintBtn.closest('.case-flip');
-  if (!flipCard) return;
-  const flipped = flipCard.classList.toggle('flipped');
-  flipCard.setAttribute('aria-pressed', flipped ? 'true' : 'false');
-});
-stage.addEventListener('keydown', (e) => {
-  if (e.key !== 'Enter' && e.key !== ' ') return;
-  const flipCard = e.target.closest('.case-flip');
-  if (!flipCard) return;
-  e.preventDefault();
-  const flipped = flipCard.classList.toggle('flipped');
-  flipCard.setAttribute('aria-pressed', flipped ? 'true' : 'false');
-});
+            // Update dropdown items to match only the selected filter
+            populateDropdown();
+            // Pick a random case from the filtered set
+            generateRandomCase();
+        }
 
-document.querySelectorAll('.dcard-flip').forEach(card => {
-  const toggleFlip = () => {
-    const flipped = card.classList.toggle('flipped');
-    card.setAttribute('aria-pressed', flipped ? 'true' : 'false');
-  };
-  card.addEventListener('click', toggleFlip);
-  card.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggleFlip();
-    }
-  });
-});
+        // Get filtered scenarios
+        function getFilteredScenarios() {
+            if (currentFilter === 'Tutti') return scenarios;
+            return scenarios.filter(s => s.category === currentFilter);
+        }
 
-const originToggle = document.getElementById('originToggle');
-const originDetails = document.getElementById('originDetails');
-originToggle.addEventListener('click', () => {
-  const isOpen = originDetails.classList.toggle('open');
-  originToggle.classList.toggle('open', isOpen);
-  originToggle.textContent = isOpen ? "Nascondi origini e fonti" : "Leggi origini, autori e fonti ufficiali";
-});
-</script>
+        // Generate Random Case from active filter
+        function generateRandomCase() {
+            const filtered = getFilteredScenarios();
+            if (filtered.length === 0) return;
+            
+            const randomIndex = Math.floor(Math.random() * filtered.length);
+            const selectedScenario = filtered[randomIndex];
+            currentScenarioIndex = scenarios.findIndex(s => s.id === selectedScenario.id);
+            
+            // Sync dropdown value if available
+            const dropdown = document.getElementById('scenario-dropdown');
+            if (dropdown) dropdown.value = selectedScenario.id;
 
+            renderScenario(selectedScenario);
+        }
+
+        // Select specific scenario from dropdown
+        function selectScenarioFromDropdown(val) {
+            if (val === "") return;
+            const scenarioId = parseInt(val);
+            const selected = scenarios.find(s => s.id === scenarioId);
+            if (selected) {
+                renderScenario(selected);
+            }
+        }
+
+        // Search handler strictly within current filter
+        function handleSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const filtered = getFilteredScenarios();
+            
+            if (!query) {
+                populateDropdown();
+                return;
+            }
+
+            const matches = filtered.filter(s => 
+                s.title.toLowerCase().includes(query) || 
+                s.context.toLowerCase().includes(query) ||
+                s.role.toLowerCase().includes(query)
+            );
+
+            // Update dropdown with matching items
+            const dropdown = document.getElementById('scenario-dropdown');
+            dropdown.innerHTML = `<option value="">-- Trovati ${matches.length} casi per "${query}" --</option>`;
+            
+            matches.forEach((sc) => {
+                const opt = document.createElement('option');
+                opt.value = sc.id;
+                opt.textContent = `#${sc.id} - ${sc.title}`;
+                dropdown.appendChild(opt);
+            });
+
+            if (matches.length > 0) {
+                dropdown.value = matches[0].id;
+                renderScenario(matches[0]);
+            }
+        }
+
+        // Render Scenario into DOM
+        function renderScenario(sc) {
+            const container = document.getElementById('case-display');
+            
+            container.innerHTML = `
+                <div>
+                    <!-- Header Badges -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4 pb-4 border-b border-slate-100">
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-extrabold px-3 py-1 rounded-lg">
+                                CASO #${sc.id} DI 40
+                            </span>
+                            <span class="bg-slate-100 text-slate-700 text-xs font-semibold px-2.5 py-1 rounded-lg">
+                                <i class="fa-solid fa-folder text-slate-400 mr-1"></i>${sc.category}
+                            </span>
+                            <span class="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-lg">
+                                <i class="fa-solid fa-user-gear mr-1"></i>${sc.role}
+                            </span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="copyScenarioText(${sc.id})" class="text-slate-500 hover:text-indigo-600 bg-slate-50 hover:bg-indigo-50 border border-slate-200 p-2 rounded-lg text-xs font-medium transition-all flex items-center space-x-1" title="Copia Caso per Corso">
+                                <i class="fa-solid fa-copy"></i>
+                                <span class="hidden sm:inline">Copia per Formazione</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Title & Context -->
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mb-3">${sc.title}</h3>
+                    <div class="bg-slate-50 border-l-4 border-indigo-500 p-4 rounded-r-xl mb-6">
+                        <span class="text-xs font-bold uppercase text-slate-400 block mb-1">Contesto Scolastico Reale</span>
+                        <p class="text-slate-700 text-sm sm:text-base leading-relaxed">${sc.context}</p>
+                    </div>
+
+                    <!-- 4D Application Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        
+                        <!-- Delega -->
+                        <div class="bg-blue-50/70 border border-blue-200/80 rounded-xl p-4">
+                            <div class="flex items-center space-x-2 text-blue-900 font-heading font-bold text-sm mb-2">
+                                <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">1</span>
+                                <h4>Delega (Decidere)</h4>
+                            </div>
+                            <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">${sc.delega}</p>
+                        </div>
+
+                        <!-- Descrizione -->
+                        <div class="bg-teal-50/70 border border-teal-200/80 rounded-xl p-4">
+                            <div class="flex items-center space-x-2 text-teal-900 font-heading font-bold text-sm mb-2">
+                                <span class="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs">2</span>
+                                <h4>Descrizione (Comunicare)</h4>
+                            </div>
+                            <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">${sc.descrizione}</p>
+                        </div>
+
+                        <!-- Discernimento -->
+                        <div class="bg-amber-50/70 border border-amber-200/80 rounded-xl p-4">
+                            <div class="flex items-center space-x-2 text-amber-900 font-heading font-bold text-sm mb-2">
+                                <span class="w-6 h-6 rounded-full bg-amber-600 text-white flex items-center justify-center text-xs">3</span>
+                                <h4>Discernimento (Valutare)</h4>
+                            </div>
+                            <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">${sc.discernimento}</p>
+                        </div>
+
+                        <!-- Diligenza -->
+                        <div class="bg-red-50/70 border border-red-200/80 rounded-xl p-4">
+                            <div class="flex items-center space-x-2 text-red-900 font-heading font-bold text-sm mb-2">
+                                <span class="w-6 h-6 rounded-full bg-red-600 text-white flex items-center justify-center text-xs">4</span>
+                                <h4>Diligenza (Rispondere)</h4>
+                            </div>
+                            <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">${sc.diligenza}</p>
+                        </div>
+
+                    </div>
+
+                    <!-- Discussion Prompt -->
+                    <div class="bg-indigo-900 text-white rounded-xl p-5 shadow-inner">
+                        <div class="flex items-center space-x-2 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-2">
+                            <i class="fa-solid fa-comments"></i>
+                            <span>Domanda per la discussione in Aula Docenti / Corso di Formazione</span>
+                        </div>
+                        <p class="font-medium text-sm sm:text-base text-indigo-50 leading-relaxed italic">
+                            "${sc.domanda}"
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Copy Scenario Text for Workshop / Training Use with custom toast message
+        function copyScenarioText(id) {
+            const sc = scenarios.find(s => s.id === id);
+            if (!sc) return;
+
+            const textToCopy = `FRAMEWORK 4D IA A SCUOLA - CASO #0${sc.id}: ${sc.title.toUpperCase()}
+Ruolo: ${sc.role} | Ambito: ${sc.category}
+
+CONTESTO:
+${sc.context}
+
+1. DELEGA (Decidere):
+${sc.delega}
+
+2. DESCRIZIONE (Comunicare):
+${sc.descrizione}
+
+3. DISCERNIMENTO (Valutare):
+${sc.discernimento}
+
+4. DILIGENZA (Rispondere):
+${sc.diligenza}
+
+DOMANDA PER LA DISCUSSIONE IN COLLEGIO/CORSO:
+"${sc.domanda}"
+
+---
+Contenuto ispirato all'AI Fluency Framework (Delegation, Description, Discernment, Diligence) sviluppato con Anthropic.`;
+
+            // Clipboard fallback
+            const textArea = document.createElement('textarea');
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast("Caso di studio copiato negli appunti! Pronto per slide o dispense.");
+            } catch (err) {
+                console.error("Errore nella copia", err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3500);
+        }
+
+        // Initialize on Load
+        window.onload = function() {
+            populateDropdown();
+            generateRandomCase();
+        };
+    </script>
 </body>
 </html>
